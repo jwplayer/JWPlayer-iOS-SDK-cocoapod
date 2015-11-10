@@ -25,28 +25,6 @@ The source code of a sample application (JWPlayer_Developer_Demo) demonstrates a
 
 https://github.com/jwplayer/jwplayer-sdk-ios-demo
 
-What’s new in this release
-==========================
-
-- Added support for Google Interactive Media Ads (IMA)
-
-Fixes in this release
-=====================
-
-- Fixed an issue where the AdClient default was missing. New default is VAST.
-- Fixed an issue where IMA ads were failing in iOS7 if offset was provided in seconds.
-
-Unsupported features
-====================
-
-- Casting to Chromecast
-- RTMP streaming
-- Playback of FLV, Vorbis or WebM formats
-- Google Analytics
-- Adobe SiteCatalyst
-- YouTube integration
-- VPAID ads
-
 License notices
 ===============
 Documentation is generated using appledoc (https://github.com/tomaz/appledoc).

@@ -13,9 +13,9 @@ Pod::Spec.new do |s|
   s.documentation_url = "http://developer.jwplayer.com/sdk/ios/docs/developer-guide/"
   s.source       = { :git => "https://github.com/jwplayer/JWPlayer-iOS-SDK-cocoapod.git", :tag => s.version.to_s }
 
+  s.ios.vendored_library = "libJWPlayer-iOS-SDK.a"
   s.source_files = "Headers/*.h"
   s.public_header_files = "Headers/*.h"
-  s.ios.vendored_library = "libJWPlayer-iOS-SDK.a"
   
   s.requires_arc = true
 
