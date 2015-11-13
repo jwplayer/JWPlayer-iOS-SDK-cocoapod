@@ -129,6 +129,13 @@
 - (void)onFullscreen:(BOOL)status;
 
 /*!
+ onControls
+ @discussion Fired when controls are enabled or disabled by setting the JWPlayerController controls property to a boolean.
+ @param status New state of the controls. Is true when the controls were just enabled.
+ */
+- (void)onControls:(BOOL)status;
+
+/*!
  onAdRequest(callback)
  @discussion VAST and IMA. Fired whenever an ad is requested by the player.
  @param tag The ad tag that is being requested.
