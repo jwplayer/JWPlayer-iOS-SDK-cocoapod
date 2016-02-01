@@ -117,16 +117,23 @@
 /*!
  onMeta(callback)
  @discussion Fired when new metadata has been broadcasted by the player.
- @param metaData Object containing the new metadata. This can be metadata hidden in the media (XMP, ID3, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
+ @param metaData Object containing the new metadata. This can be metadata hidden in the media (ID3, XMP, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
  */
 - (void)onMeta:(NSDictionary *)metaData;
 
 /*!
  onFullscreen
  @discussion Fired when the player toggles to/from fullscreen.
- @param status Wether or not video is in fullscreen mode.
+ @param status Whether or not video is in fullscreen mode.
  */
 - (void)onFullscreen:(BOOL)status;
+
+/*!
+ onPictureInPicture
+ @discussion Fired when the player enters/exits picture in picture mode. Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
+ @param status Whether or not player is displayed in Picture in Picture.
+ */
+- (void)onPictureInPicture:(BOOL)status;
 
 /*!
  onControls
@@ -278,6 +285,20 @@
  @param label Information about the quality that was changed. This will display your label, bitrate, index, and resolution.
  */
 - (void)onVisualQuality:(NSString *)mode reason:(NSString *)reason label:(NSString *)label;
+
+/*!
+ onAudioTracks (callback)
+ @discussion Fired when the list of available audio tracks is updated. Happens e.g. shortly after a playlist item starts playing.
+ @param audioTracks The full array with audio tracks.
+ */
+- (void)onAudioTracks:(NSArray *)audioTracks;
+
+/*!
+ onAudioTrackChanged (callback)
+ @discussion Fired when the active audio track is changed. Happens in repsponse to e.g. a user clicking the audio tracks menu or setting the currentAudioTrack JWPlayerController property.
+ @param Index of the newly selected audio track in the JWPlayerController's audioTracks property.
+ */
+- (void)onAudioTrackChanged:(NSInteger)currentAudioTrack;
 
 /*!
  onPlaylist(callback)

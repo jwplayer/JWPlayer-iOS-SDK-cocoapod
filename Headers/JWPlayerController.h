@@ -22,6 +22,8 @@
 #define JWCaptionsNotification @"JWCaptionsNotification"
 #define JWVideoQualityNotification @"JWVideoQualityNotification"
 #define JWPlaylistNotification @"JWPlaylistNotification"
+#define JWAudioTrackNotification @"JWAudioTrackNotification"
+#define JWPictureInPictureNotification @"JWPictureInPictureNotification"
 
 /*!
  @class JWPlayerController
@@ -105,6 +107,12 @@
 @property (nonatomic) BOOL forceLandscapeOnFullScreen;
 
 /*!
+ A Boolean value that determines whether the video should allow Picture In Picture display. Default value is NO.
+ @discussion Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
+ */
+@property (nonatomic) BOOL pictureInPictureDisabled;
+
+/*!
  If set to YES will open Safari after the user clicks the ad.
  */
 @property (nonatomic) BOOL openSafariOnAdClick;
@@ -132,6 +140,16 @@
  List of quality levels available for the current media.
  */
 @property (nonatomic, retain, readonly) NSArray *levels;
+
+/*!
+ The index of the currently active audio track.
+ */
+@property (nonatomic) NSInteger currentAudioTrack;
+
+/*!
+ Array with audio tracks from the player.
+ */
+@property (nonatomic, retain, readonly) NSArray *audioTracks;
 
 /*!
  The index of the currently active item in the playlist.
@@ -201,6 +219,12 @@
  Switches the player to inline mode.
  */
 - (void)exitFullScreen;
+
+/*!
+ Toggles the player into and out of Picture In Picture display.
+ @discussion Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
+ */
+- (void)togglePictureInPicture;
 
 /*!
  Loads a new file into the player.
