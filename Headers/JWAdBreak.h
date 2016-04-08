@@ -12,11 +12,14 @@
 @class IMAAdsRequest;
 
 /*!
- @class JWAdBreak
  JWAdBreak is an object providing info for an ad break in a video, played using JWPlayer.
  single AdBreak or a set of multiple AdBreak should be fed to JWConfig as an adSchedule array
  */
 @interface JWAdBreak : NSObject
+
+
+/* ========================================*/
+/** @name Accessing Ad Break Attributes */
 
 /*!
  Offset of the ad. Describes the point in time at which to play the ad.
@@ -48,10 +51,14 @@
  */
 @property (nonatomic) BOOL nonLinear;
 
+/* ========================================*/
+/** @name Creating Ad Break Object */
+
 /*!
  Factory method that creates a linear or non-linear AdBreak with tag and offset.
  @param tag This option is the URL to the ad tag, which contains the VAST response.
  @param offset Offset of the ad.
+ @param nonLinear Boolean value that determines if adbreak is non-linear.
  */
 + (instancetype)adBreakWithTag:(NSString *)tag offset:(NSString *)offset nonLinear:(BOOL)nonLinear;
 
@@ -59,6 +66,7 @@
  Factory method that creates a linear or non-linear AdBreak with waterfall tags and offset.
  @param tags This option is the array of URLs to the ad tags, which contains the VAST response.
  @param offset Offset of the ad.
+ @param nonLinear Boolean value that determines if adbreak is non-linear.
  */
 + (instancetype)adBreakWithTags:(NSArray *)tags offset:(NSString *)offset nonLinear:(BOOL)nonLinear;
 
@@ -75,6 +83,10 @@
  @param offset Offset of the ad.
  */
 + (instancetype)adBreakWithTags:(NSArray *)tags offset:(NSString *)offset;
+
+/* ========================================*/
+/** @name Initializing Ad Break Object */
+
 
 /*!
  Inits an AdBreak with provided params.

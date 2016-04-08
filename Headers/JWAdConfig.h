@@ -14,11 +14,14 @@ typedef enum {
 }JWAdClient;
 
 /*!
- @class JWAdConfig
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
  @discussion In current implementation adConfig object can be added to config and propagates to all adBreaks.
  */
 @interface JWAdConfig : NSObject
+
+/* ========================================*/
+/** @name Accessing Ad Config Attributes */
+
 
 /*!
  A message to be shown to the user in place of a seekbar while the ad is playing.

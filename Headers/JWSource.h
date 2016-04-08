@@ -13,6 +13,10 @@
  */
 @interface JWSource : NSObject
 
+/* ========================================*/
+/** @name Accessing Source Attributes */
+
+
 /*!
  URL of a file representing video quality
  */
@@ -28,6 +32,9 @@
  */
 @property (nonatomic) BOOL defaultQuality;
 
+/* ========================================*/
+/** @name Creating Source Object */
+
 /*!
  Initializes source with file and label.
  @param file URL of a file representing video quality.
@@ -42,6 +49,10 @@
  @param defaultQuality Determines whether this quality is the default option.
  */
 + (instancetype)sourceWithFile:(NSString *)file label:(NSString *)label isDefault:(BOOL)defaultQuality;
+
+/* ========================================*/
+/** @name Initializing Source Object */
+
 
 /*!
  Initializes source with file and label. Sets source as default.

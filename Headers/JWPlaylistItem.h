@@ -13,10 +13,13 @@
 @class JWConfig;
 
 /*!
- @class JWPlaylistItem
  An object providing info about playlist items.
  */
 @interface JWPlaylistItem : NSObject
+
+/* ========================================*/
+/** @name Accessing Playlist Item Attributes */
+
 
 /*!
  An array of JWSource objects representing multiple quality levels of a video.
@@ -56,6 +59,9 @@
  Short description of the item. It is displayed in the listbar.
  */
 @property (nonatomic, retain) NSString *desc;
+
+/* ========================================*/
+/** @name Creating Playlist Item Object */
 
 /*!
  Inits a JWPlaylistItem object with provided JWConfig.

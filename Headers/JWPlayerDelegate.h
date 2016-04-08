@@ -22,11 +22,20 @@
  */
 - (void)onAll;
 
+/* ========================================*/
+/** @name Playback */
+
 /*!
  onPlayAttempt(callback)
  @discussion Useful for QOE tracking - Triggered the instant a user attempts to play a file. This event fires before both the onPlay and onBeforePlay events.
  */
 - (void)onPlayAttempt;
+
+/*!
+ onBeforePlay(callback)
+ @discussion Fired just before the player begins playing. Unlike the onPlay event, the player will not have begun playing or buffering when triggered, which makes this the right moment to insert preroll ads using playAd().
+ */
+- (void)onBeforePlay;
 
 /*!
  onFirstFrame(callback)
@@ -48,19 +57,6 @@
 - (void)onPause;
 
 /*!
- onBuffer(callback)
- @discussion Fired when the player enters the 'buffering' state.
- */
-- (void)onBuffer;
-
-/*!
- onBuffer(callback)
- @discussion Fired when the currently playing item loads additional data into its buffer. This only applies to progressive downloads of media (MP4/FLV/WebM and AAC/MP3/Vorbis); streaming media (HLS/RTMP/YouTube/DASH) do not expose this behavior.
- @param buffer Percentage between 0 and 100 of the current media that is buffered.
- */
-- (void)onBufferChange:(double)buffer;
-
-/*!
  onIdle(callback)
  @discussion Fired when the player enters the 'idle' state.
  */
@@ -73,24 +69,35 @@
 - (void)onReady;
 
 /*!
+ onBeforeComplete(callback)
+ @discussion Fired just before the player completes playing. Unlike the onComplete event, the player will not have moved on to either showing the replay screen or advancing to the next playlistItem, which makes this the right moment to insert post-roll ads using playAd().
+ */
+- (void)onBeforeComplete;
+
+/*!
  onComplete(callback)
  @discussion Fired when an item completes playback.
  */
 - (void)onComplete;
 
-/*!
- onError(callback)
- @discussion Fired when a media error has occurred, causing the player to stop playback and go into 'idle' mode.
- @param error Object containing the reason for the error in property localizedDescription. See "Common error messages" on http://support.jwplayer.com/customer/portal/articles/1403682-troubleshooting-your-setup for a list of possible media errors.
- */
-- (void)onError:(NSError *)error;
+/* ========================================*/
+/** @name Buffer */
 
 /*!
- onSetupError(callback)
- @discussion Fired when neither the Flash nor HTML5 player could be setup.
- @param error Object containing the error message that describes why the player could not be setup. Error message can be accessed in property localizedDescription.
+ onBuffer(callback)
+ @discussion Fired when the player enters the 'buffering' state.
  */
-- (void)onSetupError:(NSError *)error;
+- (void)onBuffer;
+
+/*!
+ onBuffer(callback)
+ @discussion Fired when the currently playing item loads additional data into its buffer. This only applies to progressive downloads of media (MP4/FLV/WebM and AAC/MP3/Vorbis); streaming media (HLS/RTMP/YouTube/DASH) do not expose this behavior.
+ @param buffer Percentage between 0 and 100 of the current media that is buffered.
+ */
+- (void)onBufferChange:(double)buffer;
+
+/* ========================================*/
+/** @name Playback Position */
 
 /*!
  onTime(callback)
@@ -114,6 +121,9 @@
  */
 - (void)onSeeked;
 
+/* ========================================*/
+/** @name Metadata */
+
 /*!
  onMeta(callback)
  @discussion Fired when new metadata has been broadcasted by the player.
@@ -121,111 +131,8 @@
  */
 - (void)onMeta:(NSDictionary *)metaData;
 
-/*!
- onFullscreen
- @discussion Fired when the player toggles to/from fullscreen.
- @param status Whether or not video is in fullscreen mode.
- */
-- (void)onFullscreen:(BOOL)status;
-
-/*!
- onPictureInPicture
- @discussion Fired when the player enters/exits picture in picture mode. Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
- @param status Whether or not player is displayed in Picture in Picture.
- */
-- (void)onPictureInPicture:(BOOL)status;
-
-/*!
- onControls
- @discussion Fired when controls are enabled or disabled by setting the JWPlayerController controls property to a boolean.
- @param status New state of the controls. Is true when the controls were just enabled.
- */
-- (void)onControls:(BOOL)status;
-
-/*!
- onAdRequest(callback)
- @discussion VAST and IMA. Fired whenever an ad is requested by the player.
- @param tag The ad tag that is being requested.
- @param adposition Whether an ad is in a pre, mid, or post position.
- */
-- (void)onAdRequest:(NSString *)tag forPosition:(NSString *)adPosition;
-
-/*!
- onAdSkipped(callback)
- @discussion VAST and IMA. Fired whenever an ad has been skipped.
- @param tag The ad tag that was skipped.
- */
-- (void)onAdSkipped:(NSString *)tag;
-
-/*!
- onAdComplete(callback)
- @discussion VAST and IMA. Fired whenever an ad has completed playback.
- @param tag The ad tag that is currently playing.
- */
-- (void)onAdComplete:(NSString *)tag;
-
-/*!
- onAdClick(callback)
- @discussion VAST and IMA. Fired whenever a user clicks an ad to be redirected to its landing page.
- @param tag The ad tag that is currently playing.
- */
-- (void)onAdClick:(NSString *)tag;
-
-/*!
- onAdImpression(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
- */
-- (void)onAdImpression:(NSString *)tag;
-
-/*!
- onBeforePlay(callback)
- @discussion Fired just before the player begins playing. Unlike the onPlay event, the player will not have begun playing or buffering when triggered, which makes this the right moment to insert preroll ads using playAd().
- */
-- (void)onBeforePlay;
-
-/*!
- onBeforeComplete(callback)
- @discussion Fired just before the player completes playing. Unlike the onComplete event, the player will not have moved on to either showing the replay screen or advancing to the next playlistItem, which makes this the right moment to insert post-roll ads using playAd().
- */
-- (void)onBeforeComplete;
-
-/*!
- onAdPlay(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing. Will fire after an ad is unpaused.
- @param tag The ad tag that is currently playing.
- */
-- (void)onAdPlay:(NSString *)tag;
-
-/*!
- onAdPause(callback)
- @discussion VAST and IMA. Fired whenever an ad is paused.
- @param tag The ad tag that is currently playing.
- */
-- (void)onAdPause:(NSString *)tag;
-
-/*!
- onAdTime(callback)
- @discussion VAST and IMA. Fired while ad playback is in progress.
- @param position The current playback position in the ad creative.
- @param duration The total duration of the ad creative.
- @param tag The ad tag that is currently playing.
- @param sequence Returns the sequence number the ad is a part of.
- */
-- (void)onAdTime:(double)position ofDuration:(double)duration tag:(NSString *)tag index:(NSInteger)sequence;
-
-/*!
- onAdError(callback)
- @discussion VAST and IMA. Fired whenever an error prevents the ad from playing.
- @param error Object containing the error message under property localizedDescription. The following error messages are possible:
- -invalid ad tag (e.g. invalid XML, broken VAST)
- -ad tag empty (e.g. no ad available after chasing the wrappers)
- -no compatible creatives (e.g. only FLV video in HTML5)
- -error playing creative (e.g. a 404 on the MP4 video)
- -error loading ad tag (for all else)
- When applicable, the userInfo (NSDictionary) property of error will contain the ad tag that is currently playing (key: tag), and/or the vmap (key: vmap). If Google IMA is being used as the ad Client, the imaErrorType will be included (key: imaErrorType) and not the vmap.
- */
-- (void)onAdError:(NSError *)error;
+/* ========================================*/
+/** @name Caption */
 
 /*!
  onCaptionsList(callback)
@@ -248,6 +155,9 @@
  @param selectedTrack Index of the new active captions track in the tracks array. Note the captions are Off if the selectedTrack is 0.
  */
 - (void)onCaptionsChange:(NSInteger)selectedTrack __attribute((deprecated("Use onCaptionsChanged: instead")));
+
+/* ========================================*/
+/** @name Quality */
 
 /*!
  onLevels(callback)
@@ -286,6 +196,9 @@
  */
 - (void)onVisualQuality:(NSString *)mode reason:(NSString *)reason label:(NSString *)label;
 
+/* ========================================*/
+/** @name Audio Track */
+
 /*!
  onAudioTracks (callback)
  @discussion Fired when the list of available audio tracks is updated. Happens e.g. shortly after a playlist item starts playing.
@@ -296,9 +209,12 @@
 /*!
  onAudioTrackChanged (callback)
  @discussion Fired when the active audio track is changed. Happens in repsponse to e.g. a user clicking the audio tracks menu or setting the currentAudioTrack JWPlayerController property.
- @param Index of the newly selected audio track in the JWPlayerController's audioTracks property.
+ @param currentAudioTrack Index of the newly selected audio track in the JWPlayerController's audioTracks property.
  */
 - (void)onAudioTrackChanged:(NSInteger)currentAudioTrack;
+
+/* ========================================*/
+/** @name Playlist */
 
 /*!
  onPlaylist(callback)
@@ -320,11 +236,131 @@
  */
 - (void)onPlaylistComplete;
 
+/* ========================================*/
+/** @name Resize */
+
+/*!
+ onFullscreen
+ @discussion Fired when the player toggles to/from fullscreen.
+ @param status Whether or not video is in fullscreen mode.
+ */
+- (void)onFullscreen:(BOOL)status;
+
+/*!
+ onPictureInPicture
+ @discussion Fired when the player enters/exits picture in picture mode. Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
+ @param status Whether or not player is displayed in Picture in Picture.
+ */
+- (void)onPictureInPicture:(BOOL)status;
+
+/* ========================================*/
+/** @name Controls */
+
+/*!
+ onControls
+ @discussion Fired when controls are enabled or disabled by setting the JWPlayerController controls property to a boolean.
+ @param status New state of the controls. Is true when the controls were just enabled.
+ */
+- (void)onControls:(BOOL)status;
+
 /*!
  onDisplayClick(callback)
  @discussion Fired when a user clicks the video display. Especially useful for wiring your own controls when the built-in ones are disabled. Note the default click action (toggling play/pause) will still occur if controls are enabled.
  */
 - (void)onDisplayClick;
+
+/* ========================================*/
+/** @name Advertising */
+
+/*!
+ onAdRequest(callback)
+ @discussion VAST and IMA. Fired whenever an ad is requested by the player.
+ @param tag The ad tag that is being requested.
+ @param adPosition Whether an ad is in a pre, mid, or post position.
+ */
+- (void)onAdRequest:(NSString *)tag forPosition:(NSString *)adPosition;
+
+/*!
+ onAdSkipped(callback)
+ @discussion VAST and IMA. Fired whenever an ad has been skipped.
+ @param tag The ad tag that was skipped.
+ */
+- (void)onAdSkipped:(NSString *)tag;
+
+/*!
+ onAdComplete(callback)
+ @discussion VAST and IMA. Fired whenever an ad has completed playback.
+ @param tag The ad tag that is currently playing.
+ */
+- (void)onAdComplete:(NSString *)tag;
+
+/*!
+ onAdClick(callback)
+ @discussion VAST and IMA. Fired whenever a user clicks an ad to be redirected to its landing page.
+ @param tag The ad tag that is currently playing.
+ */
+- (void)onAdClick:(NSString *)tag;
+
+/*!
+ onAdImpression(callback)
+ @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
+ @param tag The ad tag that is currently playing.
+ */
+- (void)onAdImpression:(NSString *)tag;
+
+/*!
+ onAdPlay(callback)
+ @discussion VAST and IMA. Fired whenever an ad starts playing. Will fire after an ad is unpaused.
+ @param tag The ad tag that is currently playing.
+ */
+- (void)onAdPlay:(NSString *)tag;
+
+/*!
+ onAdPause(callback)
+ @discussion VAST and IMA. Fired whenever an ad is paused.
+ @param tag The ad tag that is currently playing.
+ */
+- (void)onAdPause:(NSString *)tag;
+
+/*!
+ onAdTime(callback)
+ @discussion VAST and IMA. Fired while ad playback is in progress.
+ @param position The current playback position in the ad creative.
+ @param duration The total duration of the ad creative.
+ @param tag The ad tag that is currently playing.
+ @param sequence Returns the sequence number the ad is a part of.
+ */
+- (void)onAdTime:(double)position ofDuration:(double)duration tag:(NSString *)tag index:(NSInteger)sequence;
+
+/*!
+ onAdError(callback)
+ @discussion VAST and IMA. Fired whenever an error prevents the ad from playing.
+ @param error Object containing the error message under property localizedDescription. The following error messages are possible:
+ -invalid ad tag (e.g. invalid XML, broken VAST)
+ -ad tag empty (e.g. no ad available after chasing the wrappers)
+ -no compatible creatives (e.g. only FLV video in HTML5)
+ -error playing creative (e.g. a 404 on the MP4 video)
+ -error loading ad tag (for all else)
+ When applicable, the userInfo (NSDictionary) property of error will contain the ad tag that is currently playing (key: tag), and/or the vmap (key: vmap). If Google IMA is being used as the ad Client, the imaErrorType will be included (key: imaErrorType) and not the vmap.
+ */
+- (void)onAdError:(NSError *)error;
+
+/* ========================================*/
+/** @name Error */
+
+/*!
+ onError(callback)
+ @discussion Fired when a media error has occurred, causing the player to stop playback and go into 'idle' mode.
+ @param error Object containing the reason for the error in property localizedDescription. See "Common error messages" on http://support.jwplayer.com/customer/portal/articles/1403682-troubleshooting-your-setup for a list of possible media errors.
+ */
+- (void)onError:(NSError *)error;
+
+/*!
+ onSetupError(callback)
+ @discussion Fired when neither the Flash nor HTML5 player could be setup.
+ @param error Object containing the error message that describes why the player could not be setup. Error message can be accessed in property localizedDescription.
+ */
+- (void)onSetupError:(NSError *)error;
 
 @end
 

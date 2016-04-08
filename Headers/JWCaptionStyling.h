@@ -19,10 +19,12 @@ typedef enum {
 }JWEdgeStyle;
 
 /*!
- @class JWCaptionConfig
  Configuration object used to customize the captions. Must be set to the JWConfig object used to create the JWPlayerController.
  */
 @interface JWCaptionStyling : NSObject
+
+/* ========================================*/
+/** @name Accessing Captions Styling Attributes */
 
 /*!
  Overrides the default font color of the captions, including its opacity.

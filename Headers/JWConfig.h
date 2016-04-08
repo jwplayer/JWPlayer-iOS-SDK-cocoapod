@@ -37,10 +37,13 @@ typedef enum {
 } JWStretching;
 
 /*!
- @class JWConfig
  Configuration object used to create JW Player instance.
  */
 @interface JWConfig : NSObject
+
+/* ========================================*/
+/** @name Accessing Config Attributes */
+
 
 /*!
  Configuration object used to customize the captions.
@@ -149,16 +152,23 @@ typedef enum {
  */
 @property (nonatomic) JWStretching stretch;
 
-/*!
- Factory method that creates a JWConfig object with url of video content.
- @param contentUrl URL of the video content.
- */
-- (instancetype)initWithContentUrl:(NSString *)contentUrl;
+/* ========================================*/
+/** @name Creating Config Object */
 
 /*!
  Inits a JWConfig object with provided video url.
  @param contentUrl URL of the video content.
  */
 + (instancetype)configWithContentURL:(NSString *)contentUrl;
+
+/* ========================================*/
+/** @name Initializing Config Object */
+
+/*!
+ Factory method that creates a JWConfig object with url of video content.
+ @param contentUrl URL of the video content.
+ */
+- (instancetype)initWithContentUrl:(NSString *)contentUrl;
+
 
 @end
