@@ -36,7 +36,7 @@
 
 /*!
  Player view.
- @discussion to be added to the applicatiion view hierarchy.
+ @discussion to be added to the application view hierarchy.
  */
 @property (nonatomic, retain, readonly) UIView *view;
 
@@ -92,6 +92,12 @@ The object that acts as the delegate of the jwPlayerController.
  Enable the built-in controls by setting them true, disable the controls by setting them false.
  */
 @property (nonatomic) BOOL controls;
+
+/*!
+ When enabled, the user will be able to control playback of the current video (play, pause, and when applicable next/previous) from the device's Lock Screen and some information (title, playback position, duration, poster image) will be presented on the lockscreen. Defaults to YES.
+ @discussion In order for the lock screen controls to appear, background audio must be enabled and the audio session must be set to AVAudioSessionCategoryPlayback.
+ */
+@property (nonatomic) BOOL displayLockScreenControls;
 
 /*!
  Returns the region of the display not used by the controls. You can use this information to ensure your visual assets don't overlap with the controls.
@@ -207,7 +213,7 @@ The object that acts as the delegate of the jwPlayerController.
 
 
 /* ========================================*/
-/** @name Managing Full Screen / Picture in Picture*/
+/** @name Managing Full Screen / Picture in Picture */
 
 /*!
  A Boolean value that determines whether the video is in full screen.

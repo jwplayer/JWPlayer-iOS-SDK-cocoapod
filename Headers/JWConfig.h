@@ -170,5 +170,4 @@ typedef enum {
  */
 - (instancetype)initWithContentUrl:(NSString *)contentUrl;
 
-
 @end
