@@ -10,6 +10,7 @@
 #import "JWConfig.h"
 #import "JWPlayerDelegate.h"
 #import "JWCastController.h"
+#import "JWDrmDataSource.h"
 
 #define JWPlayerAllNotification @"JWPlayerAllNotification"
 #define JWMetaDataAvailableNotification @"JWMetaDataAvailableNotification"
@@ -46,6 +47,13 @@ The object that acts as the delegate of the jwPlayerController.
  @see JWPlayerDelegate
  */
 @property (nonatomic, weak) id<JWPlayerDelegate> delegate;
+
+/*!
+ The JWDrmDataSource is adopted by an object that mediates the application's data model and key server. The data source provides the JWPlayerController object with the data needed to reproduce encrypted content.
+ @discussion The drmDataSource must adopt the JWDrmDataSource protocol. The drmDataSource is not retained.
+ @see JWDrmDataSource
+ */
+@property (nonatomic, weak) id<JWDrmDataSource> drmDataSource;
 
 /*!
  Returns the version of google IMA framework used by the SDK.
@@ -168,12 +176,21 @@ The object that acts as the delegate of the jwPlayerController.
 - (instancetype)initWithConfig:(JWConfig *)config;
 
 /*!
- Inits the player with config object in JWConfig format and sets the object that acts as the delegate of the jwPlayerController.
+ Inits the player with config object in JWConfig format and sets the object that acts as the delegate of the JWPlayerController.
   @param config JWConfig object that is used to setup the player.
  @param delegate The object that acts as the delegate of the jwPlayerController.
  @see JWPlayerDelegate
  */
 - (instancetype)initWithConfig:(JWConfig *)config delegate:(id<JWPlayerDelegate>)delegate;
+
+/*!
+ Inits the player with a JWConfig object and sets the object that acts as a DRM data source, as well as the delegate of the JWPlayerController.
+ @param config JWConfig object that is used to setup the player.
+ @param delegate The object that acts as the delegate of the jwPlayerController.
+ @param drmDataSource The object that acts as a data source for reproducing drm encrypted content.
+ @see JWPlayerDelegate, JWDrmDataSource
+ */
+- (instancetype)initWithConfig:(JWConfig *)config delegate:(id<JWPlayerDelegate>)delegate drmDataSource:(id<JWDrmDataSource>)drmDataSource;
 
 /* ========================================*/
 /** @name Managing Playback */
@@ -311,7 +328,6 @@ The object that acts as the delegate of the jwPlayerController.
 
 /*!
  Player edition based on the provided JW License key
- @discussion iOS SDK supports only "ads" and "enterprise"
  */
 @property (nonatomic, retain, readonly) NSString *playerEdition;
 
