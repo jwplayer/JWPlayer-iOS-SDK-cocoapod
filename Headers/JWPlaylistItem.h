@@ -44,6 +44,12 @@
 @property (nonatomic, retain) NSString *title;
 
 /*!
+ A dictionary containing asset initialization options.
+ */
+@property (nonatomic) NSDictionary *assetOptions;
+
+
+/*!
  An array of JWAdBreak objects that proivide info about ad breaks.
  @see JWAdBreak
  */
@@ -59,6 +65,11 @@
  Short description of the item. It is displayed in the listbar.
  */
 @property (nonatomic, retain) NSString *desc;
+
+/*!
+ The playlist item's Media ID.
+ */
+@property (nonatomic) NSString *mediaId;
 
 /* ========================================*/
 /** @name Creating Playlist Item Object */

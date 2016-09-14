@@ -32,6 +32,12 @@
  */
 @property (nonatomic) BOOL defaultQuality;
 
+/*!
+ A dictionary containing asset initialization options.
+ */
+@property (nonatomic) NSDictionary *assetOptions;
+
+
 /* ========================================*/
 /** @name Creating Source Object */
 

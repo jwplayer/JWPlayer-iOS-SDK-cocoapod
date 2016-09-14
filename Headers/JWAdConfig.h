@@ -44,7 +44,7 @@ typedef enum {
 /*!
  An integer representing the number of seconds before the ad can be skept.
  */
-@property (nonatomic) int skipOffset;
+@property (nonatomic) NSInteger skipOffset;
 
 /*!
  Set to googima if you wish to use google IMA; set to vastPlugin if not. Setting to nil defaults to vastPlugin.

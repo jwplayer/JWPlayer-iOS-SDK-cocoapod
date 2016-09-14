@@ -26,6 +26,7 @@
 #define JWPlaylistNotification @"JWPlaylistNotification"
 #define JWAudioTrackNotification @"JWAudioTrackNotification"
 #define JWPictureInPictureNotification @"JWPictureInPictureNotification"
+#define JWRelatedActivityNotification @"JWRelatedActivityNotification"
 
 /*!
  A class that encapsulates JW Player and provides control over the playback as well as holds the state of the player and notifies about status updates.
@@ -75,12 +76,12 @@ The object that acts as the delegate of the jwPlayerController.
  Metadata associated with the current video. Usually includes dimensions and duration of the video.
  @discussion becomes available shortly after the video starts playing. There is a notification JWMetaDataAvailableNotification posted right after metadata is available.
  */
-@property (nonatomic, retain) NSDictionary *metadata;
+@property (nonatomic, retain, readonly) NSDictionary *metadata;
 
 /*!
  Dimensions of the current video. Becomes available shortly after the video starts to play as a part of metadata.
  */
-@property (nonatomic) CGSize naturalSize;
+@property (nonatomic, readonly) CGSize naturalSize;
 
 
 /*!
@@ -221,12 +222,12 @@ The object that acts as the delegate of the jwPlayerController.
  Playback position of the current video.
  @discussion gets updated as the video plays. JWPlaybackProgressNotification is posted every time position changes. KVO compliant.
  */
-@property (nonatomic, retain) NSNumber *playbackPosition;
+@property (nonatomic, retain, readonly) NSNumber *playbackPosition;
 
 /*!
  Duration of the current video. Becomes available shortly after the video starts to play as a part of metadata.
  */
-@property (nonatomic) double duration;
+@property (nonatomic, readonly) double duration;
 
 /*!
  The volume of the JWPlayerController's audio. At 0.0 the player is muted, at 1.0 the player's volume is as loud as the device's volume.
@@ -323,6 +324,19 @@ The object that acts as the delegate of the jwPlayerController.
  If set to YES will open Safari after the user clicks the ad.
  */
 @property (nonatomic) BOOL openSafariOnAdClick;
+
+/* ========================================*/
+/** @name Related */
+
+/*!
+ Opens the related overlay. This will pause content if it is currently playing.
+ */
+- (void)openRelatedOverlay;
+
+/*!
+ Closes the related plugin overlay. This will resume content.
+ */
+- (void)closeRelatedOverlay;
 
 /* ========================================*/
 /** @name Accessing SDK Info */

@@ -14,6 +14,7 @@
 #import "JWSource.h"
 #import "JWPlaylistItem.h"
 #import "JWCaptionStyling.h"
+#import "JWRelatedConfig.h"
 
 @class JWAdConfig;
 
@@ -79,6 +80,11 @@ typedef enum {
 @property (nonatomic, retain) NSString *image;
 
 /*!
+ A dictionary containing asset initialization options.
+ */
+@property (nonatomic) NSDictionary *assetOptions;
+
+/*!
  The image you wish to display if the user gets disconnected from the internet. If this is nil, your thumbnail image will be displayed.
  */
 @property (nonatomic, retain) UIImage *offlinePoster;
@@ -98,6 +104,12 @@ typedef enum {
  @see JWAdConfig
  */
 @property (nonatomic, retain) JWAdConfig *adConfig;
+
+/*!
+ Config object containing related settings.
+ @see JWRelatedConfig
+ */
+@property (nonatomic) JWRelatedConfig *relatedConfig;
 
 /*!
  A boolean value that determines whether player controls are shown.
