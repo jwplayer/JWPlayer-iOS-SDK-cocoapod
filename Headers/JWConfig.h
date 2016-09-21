@@ -16,9 +16,7 @@
 #import "JWCaptionStyling.h"
 #import "JWRelatedConfig.h"
 
-@class JWAdConfig;
-
-typedef enum {
+typedef NS_ENUM(int, JWPremiumSkin) {
     JWPremiumSkinSeven = 0,
     JWPremiumSkinBeelden,
     JWPremiumSkinBekle,
@@ -28,14 +26,16 @@ typedef enum {
     JWPremiumSkinStormtrooper,
     JWPremiumSkinVapor,
     JWPremiumSkinSix
-}JWPremiumSkin;
+};
 
-typedef enum {
+typedef NS_ENUM(int, JWStretching) {
     JWStretchUniform = 0,
     JWStretchExactFit,
     JWStretchFill,
     JWStretchNone
-} JWStretching;
+};
+
+@class JWAdConfig;
 
 /*!
  Configuration object used to create JW Player instance.

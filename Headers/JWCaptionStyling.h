@@ -9,14 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
-typedef enum {
+typedef NS_ENUM(int, JWEdgeStyle) {
     none,
     dropshadow,
     raised,
     depressed,
     uniform
-}JWEdgeStyle;
+};
 
 /*!
  Configuration object used to customize the captions. Must be set to the JWConfig object used to create the JWPlayerController.

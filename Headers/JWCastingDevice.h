@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(int, JWCastingService) {
     googleChromeCast = 1
-}JWCastingService;
+};
 
 /*!
  @class JWCastingDevice
