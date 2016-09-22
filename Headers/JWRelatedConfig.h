@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(int, JWRelatedCompleteAction) {
+typedef enum {
     show = 0,
     hide,
     autoplay
-};
+}JWRelatedCompleteAction;
 
-typedef NS_ENUM(int, JWRelatedOpenMethod) {
+typedef enum {
     api = 0,
     complete,
     click
-};
+}JWRelatedOpenMethod;
 
 /*!
  An object providing information about the way related videos are handled by the player.

@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(int, JWAdClient) {
+typedef enum {
     vastPlugin = 1,
     googIMA = 2
-};
+}JWAdClient;
 
 /*!
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
