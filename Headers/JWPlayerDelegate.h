@@ -10,6 +10,7 @@
 #import "JWPlaylistItem.h"
 #import "JWRelatedConfig.h"
 #import "JWAdConfig.h"
+#import "JWAdCompanion.h"
 
 /*!
  @protocol JWPlayerDelegate
@@ -280,6 +281,13 @@
 - (void)onFullscreen:(BOOL)status;
 
 /*!
+ onResize
+ @discussion Fired when the player's size changes.
+ @param size The new dimensions of the player.
+ */
+- (void)onResize:(CGSize)size;
+
+/*!
  onPictureInPicture
  @discussion Fired when the player enters/exits picture in picture mode. Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
  @param status Whether or not player is displayed in Picture in Picture.
@@ -370,6 +378,14 @@
  @param creativeType The type of ad that is being played, linear or nonlinear.
  */
 - (void)onAdClick:(NSString *)tag client:(JWAdClient)client creativeType:(NSString *)creativeType;
+
+/*!
+ onAdCompanions(callback)
+ @discussion VAST only. Fired whenever an ad contains companions.
+ @param tag The ad tag that is currently playing.
+ @param companions An array with available companion information.
+ */
+- (void)onAdCompanions:(NSString *)tag companions:(NSArray<JWAdCompanion *> *)companions;
 
 /*!
  onAdImpression(callback)
@@ -467,6 +483,13 @@
  @param creativeType The type of VPAID ad that is being played.
  */
 - (void)onAdStarted:(NSString *)tag creativeType:(NSString *)creativeType;
+
+/*!
+ onAdMeta(callback)
+ @discussion Fired when new metadata has been broadcasted by the player during an Ad.
+ @param metaData Object containing the new metadata. This can be metadata hidden in the media (ID3, XMP, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
+ */
+- (void)onAdMeta:(NSDictionary *)metaData;
 
 /* ========================================*/
 /** @name Related */
