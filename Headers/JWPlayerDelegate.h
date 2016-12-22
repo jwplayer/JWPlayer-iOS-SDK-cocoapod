@@ -310,6 +310,14 @@
  */
 - (void)onDisplayClick;
 
+/*!
+ onControlBarVisible
+ @discussion Fired when player control bar appears/disappears. Would not be called if controls set to false.
+ @discussion Especially useful for synchronizing custom controls visibility with player control bar. 
+ @param isVisible Current control bar visibility status.
+ */
+- (void)onControlBarVisible:(BOOL)isVisible;
+
 /* ========================================*/
 /** @name Advertising */
 
