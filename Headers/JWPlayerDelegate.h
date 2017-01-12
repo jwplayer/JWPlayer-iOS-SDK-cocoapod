@@ -228,7 +228,7 @@
  @param reason Why the quality was changed. This can be initial choice.
  @param label Information about the quality that was changed. This will display your label, bitrate, index, and resolution.
  */
-- (void)onVisualQuality:(NSString *)mode reason:(NSString *)reason label:(NSString *)label;
+- (void)onVisualQuality:(NSString *)mode reason:(NSString *)reason label:(NSString *)label __attribute((deprecated("Not applicable in iOS. Use onMeta: to obtain bitrate")));
 
 /* ========================================*/
 /** @name Audio Track */

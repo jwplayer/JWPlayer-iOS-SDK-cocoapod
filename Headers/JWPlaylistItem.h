@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWAdConfig.h"
 #import "JWTrack.h"
 
 @class JWConfig;
