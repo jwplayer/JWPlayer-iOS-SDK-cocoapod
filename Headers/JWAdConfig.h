@@ -13,6 +13,8 @@ typedef enum {
     googIMA = 2
 }JWAdClient;
 
+@class IMASettings;
+
 /*!
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
  @discussion In current implementation adConfig object can be added to config and propagates to all adBreaks.
@@ -51,5 +53,11 @@ typedef enum {
  @discussion Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vastPlugin.
  */
 @property (nonatomic) JWAdClient adClient;
+
+/*!
+ The IMASettings class stores the Google IMA SDK settings.
+ @discussion When setting a custom imaSetting, the default value of enableBackgroundPlayback is NO.
+ */
+@property (nonatomic) IMASettings *imaSettings;
 
 @end

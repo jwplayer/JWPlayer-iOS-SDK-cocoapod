@@ -235,6 +235,12 @@ The object that acts as the delegate of the jwPlayerController.
  */
 @property (nonatomic) CGFloat volume;
 
+/*!
+ The rate at which media is being reproduced.
+ @discussion Setting this property to 1.0 will play the media at its natural rate. Ability to set a different value is limited to the rates supported by the media item; if an unsupported rate is requested, playbackRate will not change. Rates between 0.0 and 1.0 will slow forward, rates greater than 1.0 will fast forward, rates between 0.0 and -1.0 will slow reverse, and rates lower than -1.0 will fast reverse. This property will have no effect when ads are being played, or when casting. Cannot be set to 0; to pause playback, please call the pause method.
+ */
+@property (nonatomic) CGFloat playbackRate;
+
 
 /* ========================================*/
 /** @name Managing Full Screen / Picture in Picture */
