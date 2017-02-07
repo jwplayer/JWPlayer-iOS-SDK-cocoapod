@@ -414,7 +414,24 @@
  */
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper;
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: instead")));
+
+/*!
+ onAdImpression(callback)
+ @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
+ @param tag The ad tag that is currently playing.
+ @param adPosition An ad's position.
+ @param adSystem AdSystem referenced inside of the VAST XML.
+ @param adTitle AdTitle referenced inside of the VAST XML.
+ @param client The client that's currently being used, vast or googima.
+ @param creativeType The type of ad that is being played.
+ @param mediaFile  the currently playing media item.
+ @param linear Wether the ad is linear or nonlinear.
+ */
+- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
+              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear;
 
 /*!
  onAdPlay(callback)

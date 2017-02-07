@@ -127,6 +127,11 @@ typedef enum {
 @property (nonatomic) BOOL autostart;
 
 /*!
+ A boolean value that determines whether videos should be loaded before play is requested. Defaults to YES.
+ */
+@property (nonatomic) BOOL preload;
+
+/*!
  An array of JWAdBreak objects that proivides info about ad breaks.
  @discussion this property is ignored if adVmap not nil.
  @see JWAdBreak
