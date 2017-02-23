@@ -368,4 +368,10 @@ The object that acts as the delegate of the jwPlayerController.
  */
 + (NSString *)SDKVersionToMinor;
 
+/*!
+ Sets the Player Key programmatically instead of having to type it into the application's info.plist. We recommend setting the key in the AppDelegate's application:didFinishLaunchingWithOptions: method.
+ @discussion If a different key is entered in the info.plist, the key set with this method will supersede. Use this method before instantiating the JWPlayerController, ideally in the AppDelegate's application:didFinishLaunchingWithOptions: method.
+ */
++ (void)setPlayerKey:(NSString *)key;
+
 @end

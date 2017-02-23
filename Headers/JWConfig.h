@@ -169,6 +169,13 @@ typedef enum {
  */
 @property (nonatomic) JWStretching stretch;
 
+/*!
+ Sets the maximum bitrate that can be reached during automatic quality switching.
+ @discussion If network bandwidth usage cannot be reduced to meet the bitRateUpperBound, it will be lowered as much as possible while continuing playback.
+ @discussion Useful in limiting bandwith consumption for viewers.
+ */
+@property (nonatomic) double bitRateUpperBound;
+
 /* ========================================*/
 /** @name Creating Config Object */
 
