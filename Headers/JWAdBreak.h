@@ -51,6 +51,13 @@
  */
 @property (nonatomic) BOOL nonLinear;
 
+/*!
+ Available for adBreaks within a VMAP retrieved from the JWPlayerDelegate's onAdSchedule: callback.
+ @discussion VAST only.
+ @see JWPlayerDelegate
+ */
+@property (nonatomic, readonly) NSDictionary *vmapInfo;
+
 /* ========================================*/
 /** @name Creating Ad Break Object */
 

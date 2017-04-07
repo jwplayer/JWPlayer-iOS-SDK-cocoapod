@@ -60,4 +60,10 @@ typedef enum {
  */
 @property (nonatomic) IMASettings *imaSettings;
 
+/*!
+ For forcing controls to show for VPAID ads. Default is false.
+ @discussion If the VPAID creative has built-in controls, showing the controls may be redundant.
+ */
+@property (nonatomic) BOOL vpaidControls;
+
 @end

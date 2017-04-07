@@ -11,6 +11,7 @@
 #import "JWRelatedConfig.h"
 #import "JWAdConfig.h"
 #import "JWAdCompanion.h"
+#import "JWAdBreak.h"
 
 /*!
  @protocol JWPlayerDelegate
@@ -396,11 +397,19 @@
 - (void)onAdCompanions:(NSString *)tag companions:(NSArray<JWAdCompanion *> *)companions;
 
 /*!
+ onAdSchedule(callback)
+ @discussion VAST only. Fired whenever a VMAP tag is loaded.
+ @param tag The VMAP ad tag that is currently playing.
+ @param adBreaks An array containing the adBreaks of the VMAP schedule.
+ */
+- (void)onAdSchedule:(NSString *)tag adBreaks:(NSArray<JWAdBreak *> *)adBreaks;
+
+/*!
  onAdImpression(callback)
  @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
  @param tag The ad tag that is currently playing.
  */
-- (void)onAdImpression:(NSString *)tag __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: instead")));
+- (void)onAdImpression:(NSString *)tag __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: vmapInfo: instead")));
 
 /*!
  onAdImpression(callback)
@@ -414,7 +423,7 @@
  */
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: instead")));
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: instead")));
 
 /*!
  onAdImpression(callback)
@@ -431,7 +440,25 @@
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
           creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear;
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: instead")));
+
+/*!
+ onAdImpression(callback)
+ @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
+ @param tag The ad tag that is currently playing.
+ @param adPosition An ad's position.
+ @param adSystem AdSystem referenced inside of the VAST XML.
+ @param adTitle AdTitle referenced inside of the VAST XML.
+ @param client The client that's currently being used, vast or googima.
+ @param creativeType The type of ad that is being played.
+ @param mediaFile  the currently playing media item.
+ @param linear Wether the ad is linear or nonlinear.
+ @param vmapInfo Details of the VMAP schedule's adBreak that is currently playing. Available only for VMAP schedules on Vast.
+ */
+- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
+              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo;
 
 /*!
  onAdPlay(callback)

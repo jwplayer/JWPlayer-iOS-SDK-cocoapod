@@ -176,6 +176,16 @@ typedef enum {
  */
 @property (nonatomic) double bitRateUpperBound;
 
+/*!
+ Sets the timeslider above the control bar buttons at all player sizes. Defaults to false.
+ */
+@property (nonatomic) BOOL timeSliderAbove;
+
+/*!
+ Set to false to disable the “Next Up” tooltip. Defaults to true.
+ */
+@property (nonatomic) BOOL nextUpDisplay;
+
 /* ========================================*/
 /** @name Creating Config Object */
 
