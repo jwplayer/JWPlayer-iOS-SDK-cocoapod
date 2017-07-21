@@ -276,10 +276,17 @@
 
 /*!
  onFullscreen
- @discussion Fired when the player toggles to/from fullscreen.
+ @discussion Fired when the player toggles to/from fullscreen. Preceded by a onFullscreenRequested callback.
  @param status Whether or not video is in fullscreen mode.
  */
 - (void)onFullscreen:(BOOL)status;
+
+/*!
+ onFullscreenRequested
+ @discussion Fired when a request to toggle fullscreen is received by the player. Precedes a onFullscreen callback when successful.
+ @param status Whether request is to enter/exit fullscreen mode.
+ */
+- (void)onFullscreenRequested:(BOOL)status;
 
 /*!
  onResize
