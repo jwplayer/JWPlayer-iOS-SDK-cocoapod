@@ -416,7 +416,7 @@
  @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
  @param tag The ad tag that is currently playing.
  */
-- (void)onAdImpression:(NSString *)tag __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: vmapInfo: instead")));
+- (void)onAdImpression:(NSString *)tag __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
 
 /*!
  onAdImpression(callback)
@@ -430,7 +430,7 @@
  */
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: instead")));
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
 
 /*!
  onAdImpression(callback)
@@ -447,7 +447,7 @@
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
           creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: instead")));
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
 
 /*!
  onAdImpression(callback)
@@ -465,7 +465,26 @@
 - (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
               adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
           creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo;
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
+
+/*!
+ onAdImpression(callback)
+ @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
+ @param tag The ad tag that is currently playing.
+ @param adPosition An ad's position.
+ @param adSystem AdSystem referenced inside of the VAST XML.
+ @param adTitle AdTitle referenced inside of the VAST XML.
+ @param client The client that's currently being used, vast or googima.
+ @param creativeType The type of ad that is being played.
+ @param mediaFile  the currently playing media item.
+ @param linear Wether the ad is linear or nonlinear.
+ @param vmapInfo Details of the VMAP schedule's adBreak that is currently playing. Available only for VMAP schedules on Vast.
+ @param clickThroughUrl The URL which will be opened if the ad is clicked.
+ */
+- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
+              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
+          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
+             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo clickThroughUrl:(NSURL *)clickThroughUrl;
 
 /*!
  onAdPlay(callback)
