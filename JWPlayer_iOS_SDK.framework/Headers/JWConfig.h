@@ -186,6 +186,12 @@ typedef enum {
  */
 @property (nonatomic) BOOL nextUpDisplay;
 
+/*!
+ Prevents the JW Player SDK from overriding application level audio settings. Defaults to true.
+ @discussion setting to false will break AirPlay and background playback.
+*/
+@property (nonatomic) BOOL audioSwitchingEnabled;
+
 /* ========================================*/
 /** @name Creating Config Object */
 
