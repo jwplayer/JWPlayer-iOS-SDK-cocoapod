@@ -166,7 +166,6 @@ The object that acts as the delegate of the jwPlayerController.
  */
 @property (nonatomic) NSInteger playlistIndex;
 
-
 /* ========================================*/
 /** @name Initializing Player Controller Object */
 

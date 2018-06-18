@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "JWAdConfig.h"
+#import "JWFreewheelConfig.h"
 #import "JWAdBreak.h"
 #import "JWTrack.h"
 #import "JWSource.h"

@@ -10,10 +10,11 @@
 
 typedef enum {
     vastPlugin = 1,
-    googIMA = 2
+    googIMA = 2,
+    freewheel = 3
 }JWAdClient;
 
-@class IMASettings;
+@class IMASettings, JWFreewheelConfig;
 
 /*!
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
@@ -59,6 +60,12 @@ typedef enum {
  @discussion When setting a custom imaSetting, the default value of enableBackgroundPlayback is NO.
  */
 @property (nonatomic) IMASettings *imaSettings;
+
+/*!
+ The JWFreewheelConfig class stores the Freewheel SDK settings.
+ @discussion When setting Freewheel settings, the value of adClient should be set to freewheel.
+ */
+@property (nonatomic) JWFreewheelConfig *freewheel;
 
 /*!
  For forcing controls to show for VPAID ads. Default is false.
