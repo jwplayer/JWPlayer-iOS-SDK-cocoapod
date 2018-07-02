@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "JWPlaylistItem.h"
-#import "JWRelatedConfig.h"
-#import "JWAdConfig.h"
-#import "JWAdCompanion.h"
-#import "JWAdBreak.h"
+#import "JWAdEvent.h"
+#import "JWRelatedEvent.h"
 
+@protocol JWFirstFrameEvent, JWReadyEvent;
 /*!
  @protocol JWPlayerDelegate
  @discussion The JWPlayerDelegate protocol defines methods that a delegate of a JWPlayerController object can optionally implement to intervene when player callbacks are captured.
@@ -45,57 +44,32 @@
 /*!
  onFirstFrame(callback)
  @discussion Useful for QOE tracking - Triggered by a video's first frame event (Or the instant an audio file begins playback). This event pinpoints when content playback begins.
- @param loadTime The amount of time (In milliseconds) it takes for the player to transition from a playAttempt to a firstFrame event. Use this to determine the period of time between a user pressing play and the same user viewing their content.
  */
-- (void)onFirstFrame:(NSInteger)loadTime;
+- (void)onFirstFrame:(JWEvent<JWFirstFrameEvent> *)event;
 
 /*!
  onPlay(callback)
  @discussion Fired when the player enters the 'playing' state.
  */
-- (void)onPlay __attribute((deprecated("Use onPlay: instead")));
-
-/*!
- onPlay(callback)
- @discussion Fired when the player enters the 'playing' state.
- */
-- (void)onPlay:(NSString *)oldState;
+- (void)onPlay:(JWEvent<JWStateChangeEvent> *)event;
 
 /*!
  onPause(callback)
  @discussion Fired when the player enters the 'paused' state.
  */
-- (void)onPause __attribute((deprecated("Use onPause: instead")));
-
-/*!
- onPause(callback)
- @discussion Fired when the player enters the 'paused' state.
- */
-- (void)onPause:(NSString *)oldState;
+- (void)onPause:(JWEvent<JWStateChangeEvent> *)event;
 
 /*!
  onIdle(callback)
  @discussion Fired when the player enters the 'idle' state.
  */
-- (void)onIdle __attribute((deprecated("Use onIdle: instead")));
-
-/*!
- onIdle(callback)
- @discussion Fired when the player enters the 'idle' state.
- */
-- (void)onIdle:(NSString *)oldState;
+- (void)onIdle:(JWEvent<JWStateChangeEvent> *)event;
 
 /*!
  onReady(callback)
  @discussion Fired when the player has initialized in either Flash or HTML5 and is ready for playback.
  */
-- (void)onReady __attribute((deprecated("Use onReady: instead")));
-
-/*!
- onReady(callback)
- @discussion Fired when the player has initialized in either Flash or HTML5 and is ready for playback.
- */
-- (void)onReady:(NSInteger)setupTime;
+- (void)onReady:(JWEvent<JWReadyEvent> *)event;
 
 /*!
  onBeforeComplete(callback)
@@ -116,20 +90,13 @@
  onBuffer(callback)
  @discussion Fired when the player enters the 'buffering' state.
  */
-- (void)onBuffer __attribute((deprecated("Use onBuffer: newState: reason: instead")));
-
-/*!
- onBuffer(callback)
- @discussion Fired when the player enters the 'buffering' state.
- */
-- (void)onBuffer:(NSString *)oldState reason:(NSString *)reason;
+- (void)onBuffer:(JWEvent<JWBufferEvent> *)event;
 
 /*!
  onBuffer(callback)
  @discussion Fired when the currently playing item loads additional data into its buffer.
- @param buffer Percentage between 0 and 100 of the current media that is buffered.
  */
-- (void)onBufferChange:(double)buffer;
+- (void)onBufferChange:(JWEvent<JWBufferChangeEvent> *)event;
 
 /* ========================================*/
 /** @name Playback Position */
@@ -137,18 +104,14 @@
 /*!
  onTime(callback)
  @discussion While the player is playing, this event is fired as the playback position gets updated. This may occur as frequently as 10 times per second.
- @param position Playback position in seconds.
- @param duration Duration of the current item in seconds.
  */
-- (void)onTime:(double)position ofDuration:(double)duration;
+- (void)onTime:(JWEvent<JWTimeEvent> *)event;
 
 /*!
  onSeek(callback)
  @discussion Fired after a seek has been requested either by scrubbing the controlbar or through the API.
- @param offset  The user requested position to seek to (in seconds). Note the actual position the player will eventually seek to may differ.
- @param position The position of the player before the player seeks (in seconds).
  */
-- (void)onSeek:(double)offset fromPosition:(double)position;
+- (void)onSeek:(JWEvent<JWSeekEvent> *)event;
 
 /*!
  onSeeked(callback)
@@ -162,9 +125,8 @@
 /*!
  onMeta(callback)
  @discussion Fired when new metadata has been broadcasted by the player.
- @param metaData Object containing the new metadata. This can be metadata hidden in the media (ID3, XMP, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
  */
-- (void)onMeta:(NSDictionary *)metaData;
+- (void)onMeta:(JWEvent<JWMetaEvent> *)event;
 
 /* ========================================*/
 /** @name Caption */
@@ -172,24 +134,14 @@
 /*!
  onCaptionsList(callback)
  @discussion Fired when the list of available captions tracks is updated. Happens shortly after a playlist item starts playing.
- @param tracks The full array of caption tracks.
- @param selectedTrack The currently selected caption track.
  */
-- (void)onCaptionsList:(NSArray *)tracks with:(NSInteger)selectedTrack;
+- (void)onCaptionsList:(JWEvent<JWCaptionsListEvent> *)event;
 
 /*!
  onCaptionsChanged (callback)
  @discussion Fired when the active captions track is changed. Happens in response to e.g. a user clicking the controlbar CC menu or a script calling setCurrentCaptions.
- @param selectedTrack Index of the new active captions track in the tracks array. Note the captions are Off if the selectedTrack is 0.
  */
-- (void)onCaptionsChanged:(NSInteger)selectedTrack;
-
-/*!
- onCaptionsChange (callback)
- @discussion Fired when the active captions track is changed. Happens in response to e.g. a user clicking the controlbar CC menu or a script calling setCurrentCaptions.
- @param selectedTrack Index of the new active captions track in the tracks array. Note the captions are Off if the selectedTrack is 0.
- */
-- (void)onCaptionsChange:(NSInteger)selectedTrack __attribute((deprecated("Use onCaptionsChanged: instead")));
+- (void)onCaptionsChanged:(JWEvent<JWTrackChangedEvent> *)event;
 
 /* ========================================*/
 /** @name Quality */
@@ -197,39 +149,14 @@
 /*!
  onLevels(callback)
  @discussion Fired when the list of available quality levels is updated. Happens e.g. shortly after a playlist item starts playing.
- @param levels The full array of quality levels.
  */
-- (void)onLevels:(NSArray *)levels;
-
-/*!
- onQualityLevels(callback)
- @discussion Fired when the list of available quality levels is updated. Happens e.g. shortly after a playlist item starts playing.
- @param levels The full array of quality levels.
- */
-- (void)onQualityLevels:(NSArray *)levels __attribute((deprecated("Use onLevels: instead")));
+- (void)onLevels:(JWEvent<JWLevelsEvent> *)event;
 
 /*!
  onLevelsChanged(callback)
  @discussion Fired when the active quality level is changed. Happens in response to e.g. a user clicking the controlbar quality menu or a script calling setCurrentLevel.
- @param currentLevel Index of the new quality level in the getQualityLevels() array.
  */
-- (void)onLevelsChanged:(NSInteger)currentLevel;
-
-/*!
- onQualityChange(callback)
- @discussion Fired when the active quality level is changed. Happens in response to e.g. a user clicking the controlbar quality menu or a script calling setCurrentQuality.
- @param currentQuality Index of the new quality level in the getQualityLevels() array.
- */
-- (void)onQualityChange:(NSInteger)currentQuality __attribute((deprecated("Use onLevelsChanged: instead")));
-
-/*!
- onVisualQuality(callback)
- @discussion Fired when the active quality level is changed for HLS. This is different than onLevelsChanged since this will trigger when adaptive streaming automatically shifts quality. In addition, this will also provide reasons why this change happened, as well as information about how and why this change was triggered.
- @param mode The type of quality selection that has been enabled with the player. This will read auto when a user is relying on our automatic quality determination or manual when a user has selected a static quality.
- @param reason Why the quality was changed. This can be initial choice.
- @param label Information about the quality that was changed. This will display your label, bitrate, index, and resolution.
- */
-- (void)onVisualQuality:(NSString *)mode reason:(NSString *)reason label:(NSString *)label __attribute((deprecated("Not applicable in iOS. Use onMeta: to obtain bitrate")));
+- (void)onLevelsChanged:(JWEvent<JWLevelsChangedEvent> *)event;
 
 /* ========================================*/
 /** @name Audio Track */
@@ -237,16 +164,14 @@
 /*!
  onAudioTracks (callback)
  @discussion Fired when the list of available audio tracks is updated. Happens e.g. shortly after a playlist item starts playing.
- @param audioTracks The full array with audio tracks.
  */
-- (void)onAudioTracks:(NSArray *)audioTracks;
+- (void)onAudioTracks:(JWEvent<JWLevelsEvent> *)event;
 
 /*!
  onAudioTrackChanged (callback)
  @discussion Fired when the active audio track is changed. Happens in repsponse to e.g. a user clicking the audio tracks menu or setting the currentAudioTrack JWPlayerController property.
- @param currentAudioTrack Index of the newly selected audio track in the JWPlayerController's audioTracks property.
  */
-- (void)onAudioTrackChanged:(NSInteger)currentAudioTrack;
+- (void)onAudioTrackChanged:(JWEvent<JWTrackChangedEvent> *)event;
 
 /* ========================================*/
 /** @name Playlist */
@@ -254,16 +179,14 @@
 /*!
  onPlaylist(callback)
  @discussion Fired when a new playlist has been loaded into the player. Note this event is not fired as part of the initial playlist load (playlist is loaded when onReady is called).
- @param playlist The new playlist; an array of playlist items.
  */
-- (void)onPlaylist:(NSArray *)playlist;
+- (void)onPlaylist:(JWEvent<JWPlaylistEvent> *)event;
 
 /*!
  onPlaylistItem(callback)
  @discussion Fired when the playlist index changes to a new playlist item. This event occurs before the player begins playing the new playlist item.
- @param index Zero-based index into the playlist array (e.g. 0 is the first item).
  */
-- (void)onPlaylistItem:(NSInteger)index;
+- (void)onPlaylistItem:(JWEvent<JWPlaylistItemEvent> *)event;
 
 /*!
  onPlaylistComplete(callback)
@@ -277,30 +200,20 @@
 /*!
  onFullscreen
  @discussion Fired when the player toggles to/from fullscreen. Preceded by a onFullscreenRequested callback.
- @param status Whether or not video is in fullscreen mode.
  */
-- (void)onFullscreen:(BOOL)status;
+- (void)onFullscreen:(JWEvent<JWFullscreenEvent> *)event;
 
 /*!
  onFullscreenRequested
  @discussion Fired when a request to toggle fullscreen is received by the player. Precedes a onFullscreen callback when successful.
- @param status Whether request is to enter/exit fullscreen mode.
  */
-- (void)onFullscreenRequested:(BOOL)status;
+- (void)onFullscreenRequested:(JWEvent<JWFullscreenEvent> *)event;
 
 /*!
  onResize
  @discussion Fired when the player's size changes.
- @param size The new dimensions of the player.
  */
-- (void)onResize:(CGSize)size;
-
-/*!
- onPictureInPicture
- @discussion Fired when the player enters/exits picture in picture mode. Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
- @param status Whether or not player is displayed in Picture in Picture.
- */
-- (void)onPictureInPicture:(BOOL)status;
+- (void)onResize:(JWEvent<JWResizeEvent> *)event;
 
 /* ========================================*/
 /** @name Controls */
@@ -308,9 +221,8 @@
 /*!
  onControls
  @discussion Fired when controls are enabled or disabled by setting the JWPlayerController controls property to a boolean.
- @param status New state of the controls. Is true when the controls were just enabled.
  */
-- (void)onControls:(BOOL)status;
+- (void)onControls:(JWEvent<JWControlsEvent> *)event;
 
 /*!
  onDisplayClick(callback)
@@ -322,9 +234,8 @@
  onControlBarVisible
  @discussion Fired when player control bar appears/disappears. Would not be called if controls set to false.
  @discussion Especially useful for synchronizing custom controls visibility with player control bar. 
- @param isVisible Current control bar visibility status.
  */
-- (void)onControlBarVisible:(BOOL)isVisible;
+- (void)onControlBarVisible:(JWEvent<JWControlsEvent> *)event;
 
 /* ========================================*/
 /** @name Advertising */
@@ -332,270 +243,101 @@
 /*!
  onAdRequest(callback)
  @discussion VAST and IMA. Fired whenever an ad is requested by the player.
- @param tag The ad tag that is being requested.
- @param adPosition Whether an ad is in a pre, mid, or post position.
  */
-- (void)onAdRequest:(NSString *)tag forPosition:(NSString *)adPosition __attribute((deprecated("Use onAdRequest: forPosition: client: creativeType: instead")));
-
-/*!
- onAdRequest(callback)
- @discussion VAST and IMA. Fired whenever an ad is requested by the player.
- @param tag The ad tag that is being requested.
- @param adPosition Whether an ad is in a pre, mid, or post position.
- @param client The client that is currently being used, vast or googima.
- @param creativeType The type of ad that is being played, linear or nonlinear.
- */
-- (void)onAdRequest:(NSString *)tag forPosition:(NSString *)adPosition client:(JWAdClient)client creativeType:(NSString *)creativeType;
+- (void)onAdRequest:(JWAdEvent<JWAdRequestEvent> *)event;
 
 /*!
  onAdSkipped(callback)
  @discussion VAST and IMA. Fired whenever an ad has been skipped.
- @param tag The ad tag that was skipped.
  */
-- (void)onAdSkipped:(NSString *)tag __attribute((deprecated("Use onAdSkipped: client: creativeType: instead")));
-
-/*!
- onAdSkipped(callback)
- @discussion VAST and IMA. Fired whenever an ad has been skipped.
- @param tag The ad tag that was skipped.
- @param client The client that is currently being used, vast or googima.
- @param creativeType The type of ad that is being played, linear or nonlinear.
- */
-- (void)onAdSkipped:(NSString *)tag client:(JWAdClient)client creativeType:(NSString *)creativeType;
+- (void)onAdSkipped:(JWAdEvent<JWAdDetailEvent> *)event;
 
 /*!
  onAdComplete(callback)
  @discussion VAST and IMA. Fired whenever an ad has completed playback.
- @param tag The ad tag that is currently playing.
  */
-- (void)onAdComplete:(NSString *)tag __attribute((deprecated("Use onAdComplete: client: creativeType: instead")));
-
-/*!
- onAdComplete(callback)
- @discussion VAST and IMA. Fired whenever an ad has completed playback.
- @param tag The ad tag that is currently playing.
- @param client The client that is currently being used, vast or googima.
- @param creativeType The type of ad that is being played, linear or nonlinear.
- */
-- (void)onAdComplete:(NSString *)tag client:(JWAdClient)client creativeType:(NSString *)creativeType;
+- (void)onAdComplete:(JWAdEvent<JWAdDetailEvent> *)event;
 
 /*!
  onAdClick(callback)
  @discussion VAST and IMA. Fired whenever a user clicks an ad to be redirected to its landing page.
- @param tag The ad tag that is currently playing.
  */
-- (void)onAdClick:(NSString *)tag __attribute((deprecated("Use onAdClick: client: creativeType: instead")));
-
-/*!
- onAdClick(callback)
- @discussion VAST and IMA. Fired whenever a user clicks an ad to be redirected to its landing page.
- @param tag The ad tag that is currently playing.
- @param client The client that is currently being used, vast or googima.
- @param creativeType The type of ad that is being played, linear or nonlinear.
- */
-- (void)onAdClick:(NSString *)tag client:(JWAdClient)client creativeType:(NSString *)creativeType;
+- (void)onAdClick:(JWAdEvent<JWAdDetailEvent> *)event;
 
 /*!
  onAdCompanions(callback)
  @discussion VAST only. Fired whenever an ad contains companions.
- @param tag The ad tag that is currently playing.
- @param companions An array with available companion information.
  */
-- (void)onAdCompanions:(NSString *)tag companions:(NSArray<JWAdCompanion *> *)companions;
+- (void)onAdCompanions:(JWAdEvent<JWAdCompanionsEvent> *)event;
 
 /*!
  onAdSchedule(callback)
  @discussion VAST only. Fired whenever a VMAP tag is loaded.
- @param tag The VMAP ad tag that is currently playing.
- @param adBreaks An array containing the adBreaks of the VMAP schedule.
  */
-- (void)onAdSchedule:(NSString *)tag adBreaks:(NSArray<JWAdBreak *> *)adBreaks;
+- (void)onAdSchedule:(JWAdEvent<JWAdScheduleEvent> *)event;
 
 /*!
  onAdImpression(callback)
  @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
  */
-- (void)onAdImpression:(NSString *)tag __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
-
-/*!
- onAdImpression(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
- @param adPosition An ad's position.
- @param adSystem AdSystem referenced inside of the VAST XML.
- @param adTitle AdTitle referenced inside of the VAST XML.
- @param client The client that's currently being used, vast or googima.
- @param creativeType The type of ad that is being played.
- */
-- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
-              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
-
-/*!
- onAdImpression(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
- @param adPosition An ad's position.
- @param adSystem AdSystem referenced inside of the VAST XML.
- @param adTitle AdTitle referenced inside of the VAST XML.
- @param client The client that's currently being used, vast or googima.
- @param creativeType The type of ad that is being played.
- @param mediaFile  the currently playing media item.
- @param linear Wether the ad is linear or nonlinear.
- */
-- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
-              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
-
-/*!
- onAdImpression(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
- @param adPosition An ad's position.
- @param adSystem AdSystem referenced inside of the VAST XML.
- @param adTitle AdTitle referenced inside of the VAST XML.
- @param client The client that's currently being used, vast or googima.
- @param creativeType The type of ad that is being played.
- @param mediaFile  the currently playing media item.
- @param linear Wether the ad is linear or nonlinear.
- @param vmapInfo Details of the VMAP schedule's adBreak that is currently playing. Available only for VMAP schedules on Vast.
- */
-- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
-              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo __attribute((deprecated("Use onAdImpression: adPosition: adSystem: adTitle: client: creativeType: vastVersion: wrapper: mediaFile: linear: vmapInfo: clickThroughUrl: instead")));
-
-/*!
- onAdImpression(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing back. At this point, the VAST tag is loaded and the creative selected.
- @param tag The ad tag that is currently playing.
- @param adPosition An ad's position.
- @param adSystem AdSystem referenced inside of the VAST XML.
- @param adTitle AdTitle referenced inside of the VAST XML.
- @param client The client that's currently being used, vast or googima.
- @param creativeType The type of ad that is being played.
- @param mediaFile  the currently playing media item.
- @param linear Wether the ad is linear or nonlinear.
- @param vmapInfo Details of the VMAP schedule's adBreak that is currently playing. Available only for VMAP schedules on Vast.
- @param clickThroughUrl The URL which will be opened if the ad is clicked.
- */
-- (void)onAdImpression:(NSString *)tag adPosition:(NSString *)position
-              adSystem:(NSString *)adSystem adTitle:(NSString *)adTitle client:(JWAdClient)client
-          creativeType:(NSString *)creativeType vastVersion:(double)vastVersion wrapper:(NSArray *)wrapper
-             mediaFile:(NSString *)mediaFile linear:(BOOL)linear vmapInfo:(NSDictionary *)vmapInfo clickThroughUrl:(NSURL *)clickThroughUrl;
+- (void)onAdImpression:(JWAdEvent<JWAdImpressionEvent> *)event;
 
 /*!
  onAdPlay(callback)
  @discussion VAST and IMA. Fired whenever an ad starts playing. Will fire after an ad is unpaused.
- @param tag The ad tag that is currently playing.
  */
-- (void)onAdPlay:(NSString *)tag __attribute((deprecated("Use onAdPlay: creativeType: newstate: oldState: instead")));
-
-/*!
- onAdPlay(callback)
- @discussion VAST and IMA. Fired whenever an ad starts playing. Will fire after an ad is unpaused.
- @param tag The ad tag that is currently playing.
- @param creativeType The type of ad that is being played.
- @param newState The new state of the player.
- @param oldState the old state of the player.
- */
-- (void)onAdPlay:(NSString *)tag creativeType:(NSString *)creativeType newState:(NSString *)newState oldState:(NSString *)oldState;
+- (void)onAdPlay:(JWAdEvent<JWAdStateChangeEvent> *)event;
 
 /*!
  onAdPause(callback)
  @discussion VAST and IMA. Fired whenever an ad is paused.
- @param tag The ad tag that is currently playing.
  */
-- (void)onAdPause:(NSString *)tag __attribute((deprecated("Use onAdPause: creativeType: newState: oldState: instead")));
-
-/*!
- onAdPause(callback)
- @discussion VAST and IMA. Fired whenever an ad is paused.
- @param tag The ad tag that is currently playing.
- @param creativeType The type of ad that is being played.
- @param newState The new state of the player.
- @param oldState the old state of the player.
- */
-- (void)onAdPause:(NSString *)tag creativeType:(NSString *)creativeType newState:(NSString *)newState oldState:(NSString *)oldState;
+- (void)onAdPause:(JWAdEvent<JWAdStateChangeEvent> *)event;
 
 /*!
  onAdTime(callback)
  @discussion VAST and IMA. Fired while ad playback is in progress.
- @param position The current playback position in the ad creative.
- @param duration The total duration of the ad creative.
- @param tag The ad tag that is currently playing.
- @param sequence Returns the sequence number the ad is a part of.
  */
-- (void)onAdTime:(double)position ofDuration:(double)duration tag:(NSString *)tag index:(NSInteger)sequence
-    __attribute((deprecated("Use onAdTime: ofDuration: tag: index: client: creativeType: instead")));
-
-/*!
- onAdTime(callback)
- @discussion VAST and IMA. Fired while ad playback is in progress.
- @param position The current playback position in the ad creative.
- @param duration The total duration of the ad creative.
- @param tag The ad tag that is currently playing.
- @param sequence Returns the sequence number the ad is a part of.
- */
-- (void)onAdTime:(double)position ofDuration:(double)duration tag:(NSString *)tag index:(NSInteger)sequence client:(JWAdClient)client creativeType:(NSString *)creativeType;
+- (void)onAdTime:(JWAdEvent<JWAdTimeEvent> *)event;
 
 /*!
  onAdError(callback)
  @discussion VAST and IMA. Fired whenever an error prevents the ad from playing.
- @param error Object containing the error message under property localizedDescription. The following error messages are possible:
- -invalid ad tag (e.g. invalid XML, broken VAST)
- -ad tag empty (e.g. no ad available after chasing the wrappers)
- -no compatible creatives (e.g. only FLV video in HTML5)
- -error playing creative (e.g. a 404 on the MP4 video)
- -error loading ad tag (for all else)
- When applicable, the userInfo (NSDictionary) property of error will contain the ad tag that is currently playing (key: tag), and/or the vmap (key: vmap). If Google IMA is being used as the ad Client, the imaErrorType will be included (key: imaErrorType) and not the vmap.
  */
-- (void)onAdError:(NSError *)error;
+- (void)onAdError:(JWAdEvent<JWErrorEvent> *)event;
 
 /*!
  onAdStarted(callback)
  @discussion VPAID-only. Will trigger when a VPAID ad creative signals to our player that it is starting. This differs from adImpression since the advertisement may not yet be visible.
- @param tag The URL of the ad tag that was started.
- @param creativeType The type of VPAID ad that is being played.
  */
-- (void)onAdStarted:(NSString *)tag creativeType:(NSString *)creativeType;
+- (void)onAdStarted:(JWAdEvent<JWAdDetailEvent> *)event;
 
 /*!
  onAdMeta(callback)
  @discussion Fired when new metadata has been broadcasted by the player during an Ad.
- @param metaData Object containing the new metadata. This can be metadata hidden in the media (ID3, XMP, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
  */
-- (void)onAdMeta:(NSDictionary *)metaData;
+- (void)onAdMeta:(JWAdEvent<JWMetaEvent> *)event;
 
 /* ========================================*/
 /** @name Related */
 
 /*!
- onOpenRelatedOverlay(callback)
+ onRelatedOpen(callback)
  @discussion Triggers when the related overlay is opened.
- @param method The method used to open the overlay. (api, complete, or interaction)
- @param relatedFile The URL of the feed that was loaded into the player.
- @param items An object of all objects that have been loaded into the related plugin.
  */
-- (void)onOpenRelatedOverlay:(JWRelatedOpenMethod)method relatedFile:(NSString *)relatedFile items:(NSArray<JWPlaylistItem *> *)items;
+- (void)onRelatedOpen:(JWRelatedEvent<JWRelatedOpenEvent> *)event;
 
 /*!
- onCloseRelatedOverlay(callback)
+ onRelatedClose(callback)
  @discussion Triggers when the related overlay is closed.
- @param method The method used to close the overlay. (api, complete, or click)
  */
-- (void)onCloseRelatedOverlay:(NSString *)method;
+- (void)onRelatedClose:(JWRelatedEvent<JWRelatedInteractionEvent> *)event;
 
 /*!
  onRelatedPlay(callback)
  @discussion Triggers when a user selects an object in a related feed.
- @param item Metadata for the chosen item specified in the feed.
- @param auto Returns true if started via autoplay; false if manually started.
- @param position Ordinal position of the related video that has been chosen.
  */
-- (void)onRelatedPlay:(JWPlaylistItem *)item auto:(BOOL)autoplay position:(NSInteger)position;
+- (void)onRelatedPlay:(JWRelatedEvent<JWRelatedPlayEvent> *)event;
 
 /* ========================================*/
 /** @name Error */
@@ -603,16 +345,15 @@
 /*!
  onError(callback)
  @discussion Fired when a media error has occurred, causing the player to stop playback and go into 'idle' mode.
- @param error Object containing the reason for the error in property localizedDescription. See "Common error messages" on http://support.jwplayer.com/customer/portal/articles/1403682-troubleshooting-your-setup for a list of possible media errors.
- */
-- (void)onError:(NSError *)error;
+ @discussion See "Common error messages" on http://support.jwplayer.com/customer/portal/articles/1403682-troubleshooting-your-setup for a list of possible media errors.
+*/
+- (void)onError:(JWEvent<JWErrorEvent> *)event;
 
 /*!
  onSetupError(callback)
  @discussion Fired when neither the Flash nor HTML5 player could be setup.
- @param error Object containing the error message that describes why the player could not be setup. Error message can be accessed in property localizedDescription.
  */
-- (void)onSetupError:(NSError *)error;
+- (void)onSetupError:(JWEvent<JWErrorEvent> *)event;
 
 @end
 

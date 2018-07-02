@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    googleChromeCast = 1
+    JWCastingServiceGoogleChromeCast = 1
 }JWCastingService;
 
 /*!

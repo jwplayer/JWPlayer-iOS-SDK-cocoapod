@@ -25,7 +25,6 @@
 #define JWVideoQualityNotification @"JWVideoQualityNotification"
 #define JWPlaylistNotification @"JWPlaylistNotification"
 #define JWAudioTrackNotification @"JWAudioTrackNotification"
-#define JWPictureInPictureNotification @"JWPictureInPictureNotification"
 #define JWRelatedActivityNotification @"JWRelatedActivityNotification"
 
 /*!
@@ -68,9 +67,9 @@ The object that acts as the delegate of the jwPlayerController.
 
 /*!
  Returns current state of the player.
- @discussion Can be "idle", "playing", "paused" and "buffering".
+ @discussion Can be idle, playing, paused and buffering, error, complete.
  */
-@property (nonatomic, retain, readonly) NSString *playerState;
+@property (nonatomic, readonly) JWPlayerState state;
 
 /*!
  Metadata associated with the current video. Usually includes dimensions and duration of the video.
@@ -95,7 +94,7 @@ The object that acts as the delegate of the jwPlayerController.
  Returns the current PlaylistItem's filled buffer, as a percentage (0 to 100) of the total video's length.
  @discussion This only applies to progressive downloads of media (MP4/FLV/WebM and AAC/MP3/Vorbis); streaming media (HLS/RTMP/YouTube/DASH) do not expose this behavior.
  */
-@property (nonatomic, readonly) NSInteger buffer;
+@property (nonatomic, readonly) NSUInteger buffer;
 
 /*!
  Enable the built-in controls by setting them true, disable the controls by setting them false.
@@ -119,12 +118,12 @@ The object that acts as the delegate of the jwPlayerController.
 /*!
  The index of the object in quality levels list currently used by the player.
  */
-@property (nonatomic) NSInteger currentQualityLevel;
+@property (nonatomic) NSUInteger currentQuality;
 
 /*!
  List of quality levels available for the current media.
  */
-@property (nonatomic, retain, readonly) NSArray *levels;
+@property (nonatomic, retain, readonly) NSArray *qualityLevels;
 
 /* ========================================*/
 /** @name Managing Closed Captions */
@@ -134,7 +133,7 @@ The object that acts as the delegate of the jwPlayerController.
  @discussion index 0 stands for no caption.
  @see captionsList
  */
-@property (nonatomic) NSInteger currentCaptions;
+@property (nonatomic) NSUInteger currentCaptions;
 
 /*!
  List of all the captions supplied in the config
@@ -142,7 +141,7 @@ The object that acts as the delegate of the jwPlayerController.
  Object at index 0 is "off".
  @see currentCaptions
  */
-@property (nonatomic, retain, readonly) NSArray *captionsList;
+@property (nonatomic, retain, readonly) NSArray <JWTrack *> *captionsList;
 
 /* ========================================*/
 /** @name Managing Audio Tracks */
@@ -151,7 +150,7 @@ The object that acts as the delegate of the jwPlayerController.
 /*!
  The index of the currently active audio track.
  */
-@property (nonatomic) NSInteger currentAudioTrack;
+@property (nonatomic) NSUInteger currentAudioTrack;
 
 /*!
  Array with audio tracks from the player.
@@ -212,21 +211,26 @@ The object that acts as the delegate of the jwPlayerController.
 - (void)stop;
 
 /*!
+ Tells the player to immediately play the next playlist item.
+ */
+- (void)next;
+
+/*!
  @param position Time in the video to seek to
  @see duration
  */
-- (void)seek:(NSInteger)position;
+- (void)seek:(NSUInteger)position;
 
 /*!
  Playback position of the current video.
  @discussion gets updated as the video plays. JWPlaybackProgressNotification is posted every time position changes. KVO compliant.
  */
-@property (nonatomic, retain, readonly) NSNumber *playbackPosition;
+@property (nonatomic, readonly) CGFloat position;
 
 /*!
  Duration of the current video. Becomes available shortly after the video starts to play as a part of metadata.
  */
-@property (nonatomic, readonly) double duration;
+@property (nonatomic, readonly) CGFloat duration;
 
 /*!
  The volume of the JWPlayerController's audio. At 0.0 the player is muted, at 1.0 the player's volume is as loud as the device's volume.
@@ -245,9 +249,9 @@ The object that acts as the delegate of the jwPlayerController.
 /** @name Managing Full Screen / Picture in Picture */
 
 /*!
- A Boolean value that determines whether the video is in full screen.
+ The setter toggles the player's fullscreen mode; the getter returns a boolean value that determines whether the video is in full screen.
  */
-@property (nonatomic, readonly) BOOL isInFullscreen;
+@property (nonatomic) BOOL fullscreen;
 
 /*!
  A Boolean value that determines whether the video should go to full screen mode when the device rotates to landscape.
@@ -261,69 +265,47 @@ The object that acts as the delegate of the jwPlayerController.
  */
 @property (nonatomic) BOOL forceLandscapeOnFullScreen;
 
-/*!
- A Boolean value that determines whether the video should allow Picture In Picture display. Default value is NO.
- @discussion Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
- */
-@property (nonatomic) BOOL pictureInPictureDisabled;
-
-/*!
- Switches the player to full screen mode.
- */
-- (void)enterFullScreen;
-
-/*!
- Switches the player to inline mode.
- */
-- (void)exitFullScreen;
-
-/*!
- Toggles the player into and out of Picture In Picture display.
- @discussion Picture in Picture is only available on iPad Pro, iPad Air (or later), and iPad mini 2 (or later) running iOS 9.
- */
-- (void)togglePictureInPicture;
-
 /* ========================================*/
 /** @name Loading New Media */
-
-
-/*!
- Loads a new file into the player.
- @param file Video URL to play using JW Player.
- */
-- (void)load:(NSString *)file;
-
-/*!
- Loads a new JWConfig object into the player.
- @param config COnfiguration object.
- */
-- (void)loadConfig:(JWConfig *)config;
 
 /*!
  Loads a new playlist into the player.
  @param playlist An array containing playlist items.
  */
-- (void)loadPlaylist:(NSArray *)playlist;
+- (void)load:(NSArray <JWPlaylistItem *> *)playlist;
+
+/*!
+ Loads a new playlist feed into the player.
+ @param feedUrl A URL referencing the location of an RSS/XML/JSON file
+ */
+- (void)loadFeed:(NSString *)feedUrl;
 
 /* ========================================*/
 /** @name Injecting Ads */
 
 
 /*!
- Immediately starts to play an ad using the vastPlugin.
+ Immediately starts to play an ad using the vast plugin.
  @param tag Xml file with info about the ad.
- @discussion Usually used to inject an ad in streams where you can't schedule an ad. If you wish to play the ad with the Google IMA Client, please use playAd:onClient: instead and specify 'googima' as your ad client.
+ @discussion Usually used to inject an ad in streams where you can't schedule an ad. If you wish to play the ad with the Google IMA Client, please use playAd:onClient: instead and specify JWAdClientGoogima as your ad client.
  */
 - (void)playAd:(NSString *)tag;
 
 /*!
  Immediately starts to play an ad.
  @param tag Xml file with info about the ad.
- @param adClient Set to googima if you wish to use google IMA; set to vastPlugin if not. Setting to nil defaults to vastPlugin. Note: Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vastPlugin.
+ @param adClient Set to JWAdClientGoogima if you wish to use google IMA; set to JWAdClientVast if not. Setting to nil defaults to vast. Note: Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vast plugin.
  @discussion Usually used to inject an ad in streams where you can't schedule an ad.
  @see JWAdClient
  */
 - (void)playAd:(NSString *)tag onClient:(JWAdClient)adClient;
+
+/*!
+ Used to pause or resume ad playback.
+ @param state Indicates whether or not the ad playback should be paused.
+ @discussion If the state is YES, ad playback will be paused.
+ */
+- (void)pauseAd:(BOOL)state;
 
 /*!
  If set to YES will open Safari after the user clicks the ad.

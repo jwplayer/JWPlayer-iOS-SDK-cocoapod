@@ -46,7 +46,7 @@
  The list of casting devices that are currently online.
  @discussion scanForDevices must be called in order to start listening for devices.
  */
-@property (nonatomic, readonly) NSArray *availableDevices;
+@property (nonatomic, readonly) NSArray <JWCastingDevice *> *availableDevices;
 
 - (instancetype)init __attribute__((unavailable("init not available")));
 

@@ -16,25 +16,20 @@
 #import "JWPlaylistItem.h"
 #import "JWCaptionStyling.h"
 #import "JWRelatedConfig.h"
+#import "JWSkinStyling.h"
+#import "JWLogo.h"
 
 typedef enum {
-    JWPremiumSkinSeven = 0,
-    JWPremiumSkinBeelden,
-    JWPremiumSkinBekle,
-    JWPremiumSkinFive,
-    JWPremiumSkinGlow,
-    JWPremiumSkinRoundster,
-    JWPremiumSkinStormtrooper,
-    JWPremiumSkinVapor,
-    JWPremiumSkinSix
-}JWPremiumSkin;
-
-typedef enum {
-    JWStretchUniform = 0,
-    JWStretchExactFit,
-    JWStretchFill,
-    JWStretchNone
+    JWStretchingUniform = 0,
+    JWStretchingExactFit,
+    JWStretchingFill,
+    JWStretchingNone
 }JWStretching;
+
+typedef enum {
+    JWPreloadAuto = 0,
+    JWPreloadNone
+}JWPreload;
 
 @class JWAdConfig;
 
@@ -48,11 +43,6 @@ typedef enum {
 
 
 /*!
- Configuration object used to customize the captions.
- */
-@property (nonatomic, retain) JWCaptionStyling *captionStyling;
-
-/*!
  Video URL to play using JW Player.
  */
 @property (nonatomic, retain) NSString *file;
@@ -61,13 +51,13 @@ typedef enum {
  An array of JWSource objects representing multiple quality levels of a video.
  @see JWSource
  */
-@property (nonatomic, retain) NSArray *sources;
+@property (nonatomic, retain) NSArray <JWSource *> *sources;
 
 /*!
  An array of JWPlaylistItem objects containing information about different video items to be reproduced in a sequence.
  @see JWPlaylistItem
  */
-@property (nonatomic, retain) NSArray *playlist;
+@property (nonatomic, retain) NSArray <JWPlaylistItem *> *playlist;
 
 /*!
  Title of the video
@@ -79,6 +69,22 @@ typedef enum {
  The URL of the thumbnail image.
  */
 @property (nonatomic, retain) NSString *image;
+
+/*!
+ A description of your video or audio item.
+ */
+@property (nonatomic, retain, readwrite) NSString *desc;
+
+/*!
+ Unique identifier of this item. Used by advertising, analytics and discovery services
+ */
+@property (nonatomic, retain) NSString *mediaId;
+
+/*!
+ An array of JWTrack objects providing captions for different languages.
+ @see JWTrack
+ */
+@property (nonatomic, retain) NSArray <JWTrack *> *tracks;
 
 /*!
  A dictionary containing asset initialization options.
@@ -101,16 +107,22 @@ typedef enum {
 @property (nonatomic) CGSize size;
 
 /*!
+ Configures when the Next Up card displays during playback. Defaults to -10.
+ @discussion A positive value is an offset from the start of the video. A negative number is an offset from the end of the video
+ */
+@property (nonatomic) NSInteger nextupOffset;
+
+/*!
  adConfig object providing info about ad handling.
  @see JWAdConfig
  */
-@property (nonatomic, retain) JWAdConfig *adConfig;
+@property (nonatomic, retain) JWAdConfig *advertising;
 
 /*!
  Config object containing related settings.
  @see JWRelatedConfig
  */
-@property (nonatomic) JWRelatedConfig *relatedConfig;
+@property (nonatomic) JWRelatedConfig *related;
 
 /*!
  A boolean value that determines whether player controls are shown.
@@ -123,43 +135,26 @@ typedef enum {
 @property (nonatomic) BOOL repeat;
 
 /*!
+ Configures if the title of a media file should be displayed. Defaults to YES.
+ */
+@property (nonatomic) BOOL displayTitle;
+
+/*!
+ Configures if the description title of a media file should be displayed. Defaults to YES.
+ */
+@property (nonatomic) BOOL displayDescription;
+
+/*!
  A boolean value that determines whether video should start automatically after loading.
  */
 @property (nonatomic) BOOL autostart;
 
 /*!
- A boolean value that determines whether videos should be loaded before play is requested. Defaults to YES.
+ Tells the player if content should be loaded prior to playback. Defaults to JWPreloadAuto.
+ @discussion JWPreloadAuto — Loads the manifest before playback is requested. Default value.
+ @discussion JWPreloadNone — Player will explicitly not preload content. (Recommended if you are concerned about excess content usage.)
  */
-@property (nonatomic) BOOL preload;
-
-/*!
- An array of JWAdBreak objects that proivides info about ad breaks.
- @discussion this property is ignored if adVmap not nil.
- @see JWAdBreak
- */
-@property (nonatomic, retain) NSArray *adSchedule;
-
-/*!
- Vast vmap file to use for ad breaks.
- @discussion adSchedule is ignored if this property is not nil.
- */
-@property (nonatomic, retain) NSString *adVmap;
-
-/*!
- Sets a premium JW Player skin to use with the player.
- */
-@property (nonatomic) JWPremiumSkin premiumSkin;
-
-/*!
- A url to a CSS file that contains a skin to be used during player setup.
- */
-@property (nonatomic, retain) NSString *cssSkin;
-
-/*!
- An array of JWTrack objects providing captions for different languages.
- @see JWTrack
- */
-@property (nonatomic, retain) NSArray *tracks;
+@property (nonatomic) JWPreload preload;
 
 /*!
  Provides an option to stretch the video.
@@ -168,24 +163,34 @@ typedef enum {
  @discussion JWStretchingFill - Will stretch and zoom video to fill dimensions, while maintaining aspect ratio
  @discussion JWStretchingNone - Displays the actual size of the video file. (Black borders)
  */
-@property (nonatomic) JWStretching stretch;
+@property (nonatomic) JWStretching stretching;
 
 /*!
  Sets the maximum bitrate that can be reached during automatic quality switching.
  @discussion If network bandwidth usage cannot be reduced to meet the bitRateUpperBound, it will be lowered as much as possible while continuing playback.
  @discussion Useful in limiting bandwith consumption for viewers.
  */
-@property (nonatomic) double bitRateUpperBound;
-
-/*!
- Sets the timeslider above the control bar buttons at all player sizes. Defaults to false. On small device sizes, our player will always display the time slider above.
- */
-@property (nonatomic) BOOL timeSliderAbove;
+@property (nonatomic) CGFloat bitRateUpperBound;
 
 /*!
  Set to false to disable the “Next Up” tooltip. Defaults to true.
  */
 @property (nonatomic) BOOL nextUpDisplay;
+
+/*!
+ The customization options for the player's skin.
+ */
+@property (nonatomic, retain) JWSkinStyling *skin;
+
+/*!
+ The configuration options for a clickable watermark that is overlayed on the video.
+ */
+@property (nonatomic, retain) JWLogo *logo;
+
+/*!
+ Configuration object used to customize the captions.
+ */
+@property (nonatomic, retain) JWCaptionStyling *captions;
 
 /*!
  Prevents the JW Player SDK from overriding application level audio settings. Defaults to true.

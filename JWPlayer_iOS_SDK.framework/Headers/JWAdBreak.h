@@ -11,9 +11,14 @@
 @class IMAAd;
 @class IMAAdsRequest;
 
+typedef enum {
+    JWAdTypeLinear = 1,
+    JWAdTypeNonlinear = 2
+}JWAdType;
+
 /*!
  JWAdBreak is an object providing info for an ad break in a video, played using JWPlayer.
- single AdBreak or a set of multiple AdBreak should be fed to JWConfig as an adSchedule array
+ single AdBreak or a set of multiple AdBreak should be fed to the JWAdConfig's schedule array
  */
 @interface JWAdBreak : NSObject
 
@@ -43,13 +48,13 @@
  @description tags array is used as a waterfall: if the first tag fails to play, the player falls back to the second in the list and so on, until it finds one that can be played.
  @discussion ONLY ONE AD FROM ARRAY IS PLAYED.
  */
-@property (nonatomic, retain) NSArray *tags;
+@property (nonatomic, retain) NSArray <NSString *> *tags;
 
 /*!
- Set to 'YES' if the ad tag is an overlay ad banner.
- @discussion Non-linear ads are not supported by Goolge IMA as of version B15. Setting this property to 'YES' while using Google IMA will result in an assertion.
+ This should be set to JWAdTypeNonlinear if you want to force the player to render a nonlinear ad in the ad response. Defaults to JWAdTypeLinear.
+ @discussion Non-linear ads are not supported by Goolge IMA as of version B15. Setting this property to JWAdTypeNonlinear while using Google IMA will result in an assertion.
  */
-@property (nonatomic) BOOL nonLinear;
+@property (nonatomic) JWAdType type;
 
 /*!
  Available for adBreaks within a VMAP retrieved from the JWPlayerDelegate's onAdSchedule: callback.

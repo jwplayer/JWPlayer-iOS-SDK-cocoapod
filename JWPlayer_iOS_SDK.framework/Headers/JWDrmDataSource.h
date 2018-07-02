@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    JWFairPlay = 0
+    JWEncryptionFairPlay = 0
 }JWEncryption;
 
 /*!

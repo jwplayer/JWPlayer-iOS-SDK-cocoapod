@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CGGeometry.h>
 
-typedef NS_ENUM(NSInteger, JWAdCompanionType) {
-    JWStatic,
-    JWIFrame,
-    JWHtml
-};
+typedef enum {
+    JWAdCompanionTypeStatic,
+    JWAdCompanionTypeIFrame,
+    JWAdCompanionTypeHtml
+}JWAdCompanionType;
 
 @interface JWAdCompanion : NSObject
 
@@ -40,6 +40,6 @@ typedef NS_ENUM(NSInteger, JWAdCompanionType) {
 /*!
 An array of included creativeview event tracking pixels
  */
-@property (nonatomic, readonly) NSArray<NSString *> *creativeView;
+@property (nonatomic, readonly) NSArray <NSString *> *creativeView;
 
 @end

@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTrack.h"
 
 @class JWConfig;
+@class JWSource;
+@class JWAdBreak;
+@class JWTrack;
 
 /*!
  An object providing info about playlist items.
@@ -24,7 +26,7 @@
  An array of JWSource objects representing multiple quality levels of a video.
  @see JWSource
  */
-@property (nonatomic, retain) NSArray *sources;
+@property (nonatomic, retain) NSArray <JWSource *> *sources;
 
 /*!
  Video URL to a single video file, to be played using JW Player.
@@ -47,18 +49,17 @@
  */
 @property (nonatomic) NSDictionary *assetOptions;
 
-
 /*!
  An array of JWAdBreak objects that proivide info about ad breaks.
  @see JWAdBreak
  */
-@property (nonatomic, retain) NSArray *adSchedule;
+@property (nonatomic, retain) NSArray <JWAdBreak *> *adSchedule;
 
 /*!
  An array of JWTrack objects providing captions for different languages.
  @see JWTrack
  */
-@property (nonatomic, retain) NSArray *tracks;
+@property (nonatomic, retain) NSArray <JWTrack *> *tracks;
 
 /*!
  Short description of the item. It is displayed in the listbar.
@@ -69,6 +70,11 @@
  The playlist item's Media ID.
  */
 @property (nonatomic) NSString *mediaId;
+
+/*!
+ URL to a feed that contains related items for a particular playlist item.
+ */
+@property (nonatomic) NSString *recommendations;
 
 /* ========================================*/
 /** @name Creating Playlist Item Object */

@@ -10,11 +10,11 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    none,
-    dropshadow,
-    raised,
-    depressed,
-    uniform
+    JWEdgeStyleNone,
+    JWEdgeStyleDropshadow,
+    JWEdgeStyleRaised,
+    JWEdgeStyleDepressed,
+    JWEdgeStyleUniform
 }JWEdgeStyle;
 
 /*!
@@ -28,7 +28,7 @@ typedef enum {
 /*!
  Overrides the default font color of the captions, including its opacity.
  */
-@property (nonatomic, retain) UIColor *fontColor;
+@property (nonatomic, retain) UIColor *color;
 
 /*!
  Changes the background color and the opacity of the overall window the captions reside in.

@@ -37,7 +37,7 @@
 /*!
  If set to yes the player shows this captions track upon launch.
  */
-@property (nonatomic) BOOL defaultValue;
+@property (nonatomic) BOOL defaultTrack;
 
 /* ========================================*/
 /** @name Creating Captions Track Object */

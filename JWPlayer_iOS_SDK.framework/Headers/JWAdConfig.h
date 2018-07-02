@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JWAdRules.h"
 
 typedef enum {
-    vastPlugin = 1,
-    googIMA = 2,
-    freewheel = 3
+    JWAdClientVast = 0,
+    JWAdClientGoogima,
+    JWAdClientFreewheel
 }JWAdClient;
 
-@class IMASettings, JWFreewheelConfig;
+@class JWAdBreak, IMASettings, JWFreewheelConfig;
 
 /*!
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
@@ -25,6 +26,12 @@ typedef enum {
 /* ========================================*/
 /** @name Accessing Ad Config Attributes */
 
+/*!
+The URL of the VAST tag to display, or custom string of the Freewheel tag to display.
+ @discussion can also specify Vast vmap file to use for ad breaks.
+ @discussion ignore if schedule is set.
+*/
+@property (nonatomic, retain) NSString *tag;
 
 /*!
  A message to be shown to the user in place of a seekbar while the ad is playing.
@@ -47,23 +54,37 @@ typedef enum {
 /*!
  An integer representing the number of seconds before the ad can be skept.
  */
-@property (nonatomic) NSInteger skipOffset;
+@property (nonatomic) NSUInteger skipOffset;
 
 /*!
- Set to googima if you wish to use google IMA; set to vastPlugin if not. Setting to nil defaults to vastPlugin.
- @discussion Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vastPlugin.
+ An array of JWAdBreak objects that proivides info about ad breaks.
+ @discussion tag property is ignored if this property is not nil.
+ @see JWAdBreak
  */
-@property (nonatomic) JWAdClient adClient;
+@property (nonatomic, retain) NSArray <JWAdBreak *> *schedule;
+
+/*!
+ Vast vmap file to use for ad breaks.
+ @discussion schedule is ignored if this property is not nil.
+ */
+@property (nonatomic, retain) NSString *adVmap;
+
+/*!
+ 
+ Set to JWAdClientGoogima if you wish to use google IMA; set to JWAdClientVast if not. Setting to nil defaults to vast.
+ @discussion Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vast plugin.
+ */
+@property (nonatomic) JWAdClient client;
 
 /*!
  The IMASettings class stores the Google IMA SDK settings.
  @discussion When setting a custom imaSetting, the default value of enableBackgroundPlayback is NO.
  */
-@property (nonatomic) IMASettings *imaSettings;
+@property (nonatomic) IMASettings *googimaSettings;
 
 /*!
  The JWFreewheelConfig class stores the Freewheel SDK settings.
- @discussion When setting Freewheel settings, the value of adClient should be set to freewheel.
+ @discussion When setting Freewheel settings, the value of adClient should be set to JWAdClientFreewheel.
  */
 @property (nonatomic) JWFreewheelConfig *freewheel;
 
@@ -72,5 +93,11 @@ typedef enum {
  @discussion If the VPAID creative has built-in controls, showing the controls may be redundant.
  */
 @property (nonatomic) BOOL vpaidControls;
+
+/*!
+ Used to control the frequency of ad playback
+ @discussion Available only for the VAST adClient.
+ */
+@property (nonatomic, retain) JWAdRules *rules;
 
 @end
