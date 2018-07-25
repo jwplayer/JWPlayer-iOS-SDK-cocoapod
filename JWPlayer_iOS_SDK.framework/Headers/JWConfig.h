@@ -157,6 +157,19 @@ typedef enum {
 @property (nonatomic) JWPreload preload;
 
 /*!
+ Enables the display of a settings menu to adjust the playback speed. Defaults to NO.
+ @discussion When set to YES, the pre-defined options available in the menu are 0.5x, 1x, 1.25x, 1.5x, and 2x. 
+ @discussion Use the playbackRates array to customize the menu options.
+ */
+@property (nonatomic) BOOL playbackRateControls;
+
+/*!
+ Custom playback rate options to display in the settings menu.
+ @discussion Only accepts value in the 0.0 to 4.0 range.
+ */
+@property (nonatomic, retain) NSArray <NSNumber *> *playbackRates;
+
+/*!
  Provides an option to stretch the video.
  @discussion JWStretchingUniform (default) - Will fit JW Player dimensions while maintaining original aspect ratio (Black bars)
  @discussion JWStretchingExactFit - Will fit JW Player dimensions without maintaining aspect ratio

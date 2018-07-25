@@ -212,6 +212,14 @@ typedef enum {
 
 @end
 
+@protocol JWPlaybackRateEvent <NSObject>
+
+/*!
+ New playback rate of the video.
+ */
+@property (nonatomic) CGFloat playbackRate;
+
+@end
 
 @protocol JWErrorEvent <NSObject>
 /*!

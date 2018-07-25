@@ -19,7 +19,7 @@ typedef enum {
 
 /*!
  An object providing information about the way ads are handled by the player. Describes adMessage, skipMessage, skipText and skipOffset.
- @discussion In current implementation adConfig object can be added to config and propagates to all adBreaks.
+ @discussion In the current implementation, an adConfig object can be added to config and propagates to all adBreaks.
  */
 @interface JWAdConfig : NSObject
 
@@ -27,7 +27,7 @@ typedef enum {
 /** @name Accessing Ad Config Attributes */
 
 /*!
-The URL of the VAST tag to display, or custom string of the Freewheel tag to display.
+The URL of the VAST tag to display, or the custom string of the Freewheel tag to display.
  @discussion can also specify Vast vmap file to use for ad breaks.
  @discussion ignore if schedule is set.
 */
@@ -47,12 +47,12 @@ The URL of the VAST tag to display, or custom string of the Freewheel tag to dis
 @property (nonatomic, retain) NSString *skipMessage;
 
 /*!
- A message to be shown on the skip button when the skip option becomes avilable.
+ A message to be shown on the skip button when the skip option becomes available.
  */
 @property (nonatomic, retain) NSString *skipText;
 
 /*!
- An integer representing the number of seconds before the ad can be skept.
+ An integer representing the number of seconds before the ad can be skipped.
  */
 @property (nonatomic) NSUInteger skipOffset;
 
@@ -70,7 +70,6 @@ The URL of the VAST tag to display, or custom string of the Freewheel tag to dis
 @property (nonatomic, retain) NSString *adVmap;
 
 /*!
- 
  Set to JWAdClientGoogima if you wish to use google IMA; set to JWAdClientVast if not. Setting to nil defaults to vast.
  @discussion Due to the fact that Google IMA's iOS SDK is still in Beta mode, we suggest using the vast plugin.
  */
@@ -95,7 +94,7 @@ The URL of the VAST tag to display, or custom string of the Freewheel tag to dis
 @property (nonatomic) BOOL vpaidControls;
 
 /*!
- Used to control the frequency of ad playback
+ Use to control the frequency of ad playback.
  @discussion Available only for the VAST adClient.
  */
 @property (nonatomic, retain) JWAdRules *rules;

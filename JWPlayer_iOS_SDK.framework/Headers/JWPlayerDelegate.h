@@ -237,6 +237,12 @@
  */
 - (void)onControlBarVisible:(JWEvent<JWControlsEvent> *)event;
 
+/*!
+ onPlaybackRateChanged
+ @discussion Fired when the playback rate changes.
+ */
+- (void)onPlaybackRateChanged:(JWEvent<JWPlaybackRateEvent> *)event;
+
 /* ========================================*/
 /** @name Advertising */
 
