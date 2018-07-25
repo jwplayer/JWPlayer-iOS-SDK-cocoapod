@@ -17,9 +17,6 @@ Pod::Spec.new do |s|
 
   s.ios.vendored_frameworks = "JWPlayer_iOS_SDK.framework"
 
-    # Module Umbrella header goes here - related to [IOS-1437](https://jwplayer.atlassian.net/browse/IOS-1437)
-  spec.module_name = 'JWPlayer_iOS_SDK'
-
   spec.social_media_url = 'https://www.facebook.com/jwplayer/'
   spec.social_media_url = 'https://twitter.com/jwplayer'
   spec.social_media_url = 'https://twitter.com/jwpsupport'
