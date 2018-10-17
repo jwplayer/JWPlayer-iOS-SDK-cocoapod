@@ -219,7 +219,7 @@ The object that acts as the delegate of the jwPlayerController.
  @param position Time in the video to seek to
  @see duration
  */
-- (void)seek:(NSUInteger)position;
+- (void)seek:(NSInteger)position;
 
 /*!
  Playback position of the current video.
