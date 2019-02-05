@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.version      = "3.2.1"
   s.summary      = "JW Player SDK for iOS."
 
-  s.homepage     = "http://www.jwplayer.com/products/mobile-sdk/"
+  s.homepage     = "https://www.jwplayer.com/mobile-sdk/"
   s.license      = { :type => "Commercial", :file => "LICENSE.md" }
 
   s.authors      = { "JW Player" => "support@jwplayer.com" }
