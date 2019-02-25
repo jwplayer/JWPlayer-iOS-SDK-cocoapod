@@ -61,7 +61,7 @@ typedef enum {
  @param encryption The DRM system used (i.e. Apple FairPlay).
  
  @param completion The completion block used to provide the JW Player SDK with the content identifier. In the case of Apple FairPlay this is an opaque identifier for the content and is needed to obtain the SPC (Server Playback Context) message from the operating system.
- @deprecated JWPlayer no longer uses this method.
+ @deprecated JWPlayer uses this method only for iOS version less then 11.
  */
 - (void)fetchContentIdentifierForRequest:(NSURL *)loadingRequestURL
                            forEncryption:(JWEncryption)encryption
