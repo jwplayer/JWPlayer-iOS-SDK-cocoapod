@@ -22,6 +22,7 @@
 #define JWAdPlaybackProgressNotification @"JWAdPlaybackProgressNotification"
 #define JWAdClickNotification @"JWAdClickNotification"
 #define JWErrorNotification @"JWErrorNotification"
+#define JWWarningNotification @"JWWarningNotification"
 #define JWCaptionsNotification @"JWCaptionsNotification"
 #define JWVideoQualityNotification @"JWVideoQualityNotification"
 #define JWPlaylistNotification @"JWPlaylistNotification"
