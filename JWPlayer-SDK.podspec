@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "JWPlayer-SDK"
-  s.version      = "3.8.0"
+  s.version      = "3.8.1"
   s.summary      = "JW Player SDK for iOS."
 
   s.homepage     = "https://www.jwplayer.com/mobile-sdk/"
@@ -18,4 +18,3 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
 end
-
