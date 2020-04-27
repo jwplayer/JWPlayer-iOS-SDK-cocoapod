@@ -226,6 +226,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onPlaybackRateChanged:(JWEvent<JWPlaybackRateEvent> *)event;
 
 /* ========================================*/
+/** @name Viewability
+ */
+
+/**
+ Fired when the player's viewability status changes
+ */
+- (void)onViewable:(JWEvent<JWViewabilityEvent> *)event;
+
+/* ========================================*/
 /** @name Advertising
  */
 
@@ -272,7 +281,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  VAST, IMA, and FreeWheel. Fired whenever an ad is paused.
  */
-- (void)onAdPause:(JWAdEvent<JWAdStateChangeEvent> *)event;
+- (void)onAdPause:(JWAdEvent<JWPauseEvent, JWAdStateChangeEvent> *)event;
 
 /**
  VAST, IMA, and FreeWheel. Fired while ad playback is in progress.

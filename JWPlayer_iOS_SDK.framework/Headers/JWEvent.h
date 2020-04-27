@@ -27,6 +27,18 @@ typedef NS_ENUM(NSInteger, JWPlayerState) {
     JWPlayerStateError
 };
 
+/**
+    Reason why player was paused
+ */
+typedef NS_ENUM(NSInteger, JWPlayerPauseReason) {
+    /// Player is paused due to external api call
+    JWPlayerPauseReasonExternal = 0,
+    /// Player is paused due to user interaction
+    JWPlayerPauseReasonInteraction,
+    /// Player is paused due to a clickthrough
+    JWPlayerPauseReasonClickthrough
+};
+
 @class JWTrack, JWSource, JWPlaylistItem, JWPlayerError, JWAdCompanion;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -59,6 +71,18 @@ NS_ASSUME_NONNULL_BEGIN
  The old state of the player.
  */
 @property (nonatomic) JWPlayerState oldState;
+
+@end
+
+/**
+   JWPauseEvent is emitted when the video is paused.
+*/
+@protocol JWPauseEvent <NSObject>
+
+/**
+ Reason video playback has been paused
+ */
+@property (nonatomic) JWPlayerPauseReason pauseReason;
 
 @end
 
@@ -143,8 +167,62 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol JWMetaEvent <NSObject>
 
 /**
- Object containing the new metadata. This can be metadata hidden in the media (DATERANGE, ID3, XMP, keyframes) or metadata broadcasted by the playback provider (bandwidth, quality switches).
- */
+An object containing the new metadata. This can be metadata hidden in the media or metadata broadcasted by the playback provider. The different
+types of metadata include:
+
+Date range metadata: Fired when playback enters the section of an HLS stream tagged with #EXT-X-DATERANGE.
+Its payload includes:
+
+    metadata: Object containing all of the information relevant to the HLS #EXT-X-DATERANGE tag.
+        attributes: (Array) EXT-X-DATERANGE attribute array.
+        content: (String) Content following the HLS tag.
+        duration: (Number) Duration of the EXT-X-DATERANGE.
+        start: (Number) Start time of the cue in seconds, relative to currentTime of the stream.
+        end: (Number) End time of the cue in seconds, relative to currentTime of the stream.
+        startDate: (String) EXT-X-DATERANGE start date in UTC.
+        endDate: (String) EXT-X-DATERANGE end date in UTC.
+        tag: (String) Name of the HLS manifest tag. This is always EXT-X-DATERANGE for this event.
+    metadataTime: (Number) Start time of the cue in seconds, relative to currentTime of the stream (same as 'start').
+    metadataType: (String) Subcategory of meta event. This is always 'date-range' for this event subcategory.
+    type: (String) Category of player event. Either 'meta' or 'metadataCueParsed'.
+
+Program-date-time metadata. Fires when playback enters the section of an HLS stream tagged with #EXT-X-PROGRAM-DATE-TIME.
+Its payload includes:
+
+    metadata: Object containing all of the information relevant to the HLS #EXT-X-PROGRAM-DATE-TIME tag.
+        start: (Number) Start time of the cue in seconds, relative to currentTime of the stream.
+        end: (Number) End time of the cue in seconds, relative to currentTime of the stream.
+        programDateTime: (String) Date and time of the program metadata in UTC.
+    metadataTime: (Number) Start time of the cue in seconds, relative to currentTime of the stream (same as 'start').
+    programDateTime: (String) Date and time of the program metadata in UTC.
+    metadataType: (String) Subcategory of meta event. This is always 'program-date-time' for this event subcategory.
+    type: (String) Category of player event. Either 'meta' or 'metadataCueParsed'.
+
+ ID3 metadata. Fires when playback buffers a section of an HLS stream containing ID3 tags.
+ Its payload includes:
+
+    ID3: Object containing all the properties associated with an AVMetadataItem. The AVMetadataItem's properties are only included if they're not empty.
+
+ Media metadata. Fires when the initial metadata of a video has loaded.
+ Its payload includes:
+
+    duration: (Number) Length of the media asset.
+    height: (Number) Height dimension of the media asset.
+    width: (Number) Width dimension of the media asset.
+    frameRate: (Number) The number of frames per second for tracks that carry a full frame per media sample.
+    seekRange: Object containing the time range representing how much video is available to buffer in live stream or for seeking in DVR.
+        start: (Number) Start time of the time range in seconds, relative to currentTime of the stream.
+        end: (Number) End time of the time range in seconds, relative to currentTime of the stream.
+
+ Access log metadata. Fires when a new access log entry has been added for the player item.
+ Its payload includes:
+
+    observedBitrate: (Number) The empirical throughput across all media downloaded. Measured in
+    bits per second. Value is negative if unknown.
+    indicatedBitrate: (Number) The throughput required to play the stream, as advertised by the server.
+    Measured in bits per second. Value is negative if unknown.
+    droppedFrames: (Number) Number of dropped video frames. Value is negative if unknown.
+*/
 @property (nonatomic) NSDictionary *metadata;
 
 @end
@@ -272,6 +350,18 @@ NS_ASSUME_NONNULL_BEGIN
  New playback rate of the video.
  */
 @property (nonatomic) CGFloat playbackRate;
+
+@end
+
+/**
+ JWViewabilityEvent is emitted when the viewability status of the player changes
+ */
+@protocol JWViewabilityEvent <NSObject>
+
+/**
+ Whether the player is viewable or not
+ */
+@property (nonatomic) BOOL viewable;
 
 @end
 

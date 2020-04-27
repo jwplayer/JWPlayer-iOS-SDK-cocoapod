@@ -93,6 +93,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, copy) NSString *recommendations;
 
+/**
+ Number of seconds from the start of a media asset when playback should begin.
+ */
+@property (nonatomic, assign) CGFloat startTime;
+
 /* ========================================*/
 /** @name Creating Playlist Item Object
  */
