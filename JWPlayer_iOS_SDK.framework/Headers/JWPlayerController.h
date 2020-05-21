@@ -123,6 +123,10 @@ The object that acts as the delegate of the jwPlayerController.
 /**
  When enabled, the user will be able to control playback of the current video (play, pause, and when applicable next/previous) from the device's Lock Screen and some information (title, playback position, duration, poster image) will be presented on the lockscreen. Defaults to YES.
  @note In order for the lock screen controls to appear, background audio must be enabled and the audio session must be set to AVAudioSessionCategoryPlayback.
+ @note Instantiating more than one player simultaneously can potentially cause
+ undesirable behavior regarding lock screen controls, as they are enabled by default for each player.
+ To enable lock screen controls for only a specific player: after all the players have been instantiated, explicitly set 'displayLockScreenControls' to YES on the desired player,
+ and make sure 'displayLockScreenControls' is set to NO for the undesired player(s).
  */
 @property (nonatomic) BOOL displayLockScreenControls;
 
