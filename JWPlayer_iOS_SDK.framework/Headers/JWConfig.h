@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "JWAdConfig.h"
-#import "JWFreewheelConfig.h"
-#import "JWGoogimaDaiConfig.h"
-#import "JWAdBreak.h"
-#import "JWTrack.h"
-#import "JWSource.h"
 #import "JWPlaylistItem.h"
 #import "JWCaptionStyling.h"
 #import "JWRelatedConfig.h"
@@ -100,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, retain) NSString *mediaId;
 
 /**
- An array of JWTrack objects providing captions for different languages.
+ An array of JWTrack objects providing captions for different languages or thumbnails images.
  @see JWTrack
  */
 @property (nonatomic, nullable, retain) NSArray <JWTrack *> *tracks;
@@ -138,6 +133,19 @@ NS_ASSUME_NONNULL_BEGIN
  @note takes precedence over nextupOffset if both properties are set.
  */
 @property (nonatomic) NSInteger nextupOffsetPercentage;
+
+/**
+ Set to false to disable the “Next Up” tooltip. Defaults to true.
+ */
+@property (nonatomic) BOOL nextUpDisplay;
+
+/**
+ Array of metadata that can be passed externally to supplement the encoded metadata of the underlying media asset.
+ @discussion Applies to all playlist items that do not specify their own externalMetadata.
+ @note Capped at 5 metadata instances; the instances in excess will be excluded.
+ @see JWExternalMetadata
+*/
+@property (nonatomic, nullable, copy) NSArray <JWExternalMetadata *> *externalMetadata;
 
 /**
  adConfig object providing info about ad handling.
@@ -211,11 +219,6 @@ NS_ASSUME_NONNULL_BEGIN
  @note Useful in limiting bandwith consumption for viewers.
  */
 @property (nonatomic) CGFloat bitRateUpperBound;
-
-/**
- Set to false to disable the “Next Up” tooltip. Defaults to true.
- */
-@property (nonatomic) BOOL nextUpDisplay;
 
 /**
  The customization options for the player's skin.

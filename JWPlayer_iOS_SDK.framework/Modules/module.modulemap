@@ -1,0 +1,6 @@
+framework module JWPlayer_iOS_SDK {
+  umbrella header "JWPlayer-iOS-SDK.h"
+
+  export *
+  module * { export * }
+}

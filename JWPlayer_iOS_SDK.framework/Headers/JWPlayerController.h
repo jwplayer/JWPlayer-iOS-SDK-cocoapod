@@ -15,6 +15,7 @@
 #import "JWExperimentalAPI.h"
 #import "JWFriendlyAdObstructions.h"
 #import "JWButton.h"
+#import "JWPlaylistItemDelegate.h"
 
 #define JWPlayerAllNotification @"JWPlayerAllNotification"
 #define JWMetaDataAvailableNotification @"JWMetaDataAvailableNotification"
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, retain, readonly) UIView *view;
 
 /**
-The object that acts as the delegate of the jwPlayerController.
+The object that acts as the delegate of the JWPlayerController.
  @note The delegate must adopt the JWPlayerDelegate protocol. The delegate is not retained.
  @see JWPlayerDelegate
  */
@@ -67,6 +68,15 @@ The object that acts as the delegate of the jwPlayerController.
  @see JWDrmDataSource
  */
 @property (nonatomic, nullable, weak) id<JWDrmDataSource> drmDataSource;
+
+/**
+ The object that acts as a playlist item delegate to the JWPlayerController.
+ The playlistItemDelegate will be notified when a playlist item is about to transition. At this point the playlistItemDelegate can choose to either proceed with the playlist item's load, make modifications to it, load an entirely different item, or skip the item's load.
+ @note The playlistItemDelegate is used for intercepting item loads. To be notified when a playlistItem successfully loads, use the JWPlayerController's delegate.
+ @note The delegate must adopt the JWPlaylistItemDelegate protocol. The delegate is not retained.
+ @see JWPlaylistItemDelegate
+ */
+@property (nonatomic, nullable, weak) id<JWPlaylistItemDelegate> playlistItemDelegate;
 
 /**
  An interface for exposing experimental features.
@@ -318,6 +328,24 @@ The object that acts as the delegate of the jwPlayerController.
  @see JWButton
  */
 - (void)removeButton:(JWButton *)button;
+
+/* ========================================*/
+/** @name External Metadata */
+
+/**
+ Returns the external metadata applied to the current playlist item.
+ @see JWPlaylistItem, JWConfig
+ */
+- (NSArray<JWExternalMetadata *> *)getExternalMetadata;
+
+/**
+ Sets external metadata to the current playlist item. Will not apply to the subsequent playlist items.
+ @discussion We recommend using this method to add external metadata to playlist items loaded from a related feed. For items loaded in the config's playlist, set the external metadata directly on the playlist item before setting up the player.
+ @note Capped at 5 metadata instances; the instances in excess will be excluded
+ @note If you wish to apply the same external metadata to all playlist items, set the external metadata on the JWConfig.
+ @see JWPlaylistItem, JWRelatedConfig
+ */
+- (void)setExternalMetadata:(NSArray<JWExternalMetadata *> *_Nonnull)externalMetadata;
 
 /* ========================================*/
 /** @name Loading New Media */

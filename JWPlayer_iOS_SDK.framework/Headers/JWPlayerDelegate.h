@@ -313,6 +313,11 @@ Fires after the ad request and immediately before the ad is loaded into the play
  */
 - (void)onAdBreakEnd:(JWAdEvent<JWAdBreakEvent> *)event;
 
+/**
+ VAST only. Fired when a non-fatal warning rises and that is not critical to the playback of an ad.
+ */
+- (void)onAdWarning:(JWAdEvent<JWErrorEvent> *)event;
+
 /* ========================================*/
 /** @name Related
  */
