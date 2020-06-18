@@ -150,11 +150,13 @@ The object that acts as the delegate of the JWPlayerController.
 
 /**
  The index of the object in quality levels list currently used by the player.
+ @note When playing an adaptive stream, an index of 0 will always be "Auto".
  */
 @property (nonatomic) NSUInteger currentQuality;
 
 /**
- List of quality levels available for the current media.
+ List of quality levels available for the current media expressed as an array of dictionaries.
+ @note Use the following link to review the format of the dictionaries: https://developer.jwplayer.com/jwplayer/docs/jw8-javascript-api-reference#section-jwplayer-get-quality-levels
  */
 @property (nonatomic, retain, readonly) NSArray *qualityLevels;
 
