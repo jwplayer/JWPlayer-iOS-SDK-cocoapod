@@ -69,6 +69,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, retain) NSArray <JWPlaylistItem *> *playlist;
 
 /**
+ Item within a playlist to start playback.
+ @discussion
+ Within the playlist, the first index is 0. If the playlistIndex value is negative, the index starts counting from the end of the playlist.
+ @warning
+ A negative value cannot exceed the absolute number of playlist items. For example, in a playlist of 5 items, "playlistIndex": -5 is the lowest acceptable negative number.
+ */
+@property (nonatomic, assign) NSInteger playlistIndex;
+
+/**
  Title (or name) of the video
  @note Shown in the play button container in the center of the screen, before the video starts to play, 
  in addition to the device lock screen and in the multimedia controls in the multitasking UI. 
