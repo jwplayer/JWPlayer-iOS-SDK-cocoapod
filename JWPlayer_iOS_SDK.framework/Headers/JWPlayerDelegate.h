@@ -138,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- Fired when the list of available quality levels is updated. Happens e.g. shortly after a playlist item starts playing.
+ Fired when the list of available quality levels is updated. Happens shortly after a playlist item starts playing.
  Not applicable for HLS.
  */
 - (void)onLevels:(JWEvent<JWLevelsEvent> *)event;
@@ -294,7 +294,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onAdError:(JWAdEvent<JWErrorEvent> *)event;
 
 /**
- VPAID-only (not FreeWheel or IMA). Will trigger when a VPAID ad creative signals to our player that it is starting. This differs from adImpression since the advertisement may not yet be visible.
+ VPAID, and IMA only. Will trigger when a VPAID ad creative signals to our player that it is starting. This differs from adImpression since the advertisement may not yet be visible.
  */
 - (void)onAdStarted:(JWAdEvent<JWAdDetailEvent> *)event;
 

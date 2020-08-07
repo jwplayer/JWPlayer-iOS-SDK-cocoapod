@@ -258,7 +258,7 @@ Its payload includes:
 @end
 
 /**
- JWLevelsEvent is emitted when the qualify levels or audio tracks information are available.
+ The JWLevelsEvent is emitted when the quality levels or audio tracks information become available.
  */
 @protocol JWLevelsEvent <NSObject>
 
