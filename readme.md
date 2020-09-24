@@ -2,8 +2,8 @@
 JW Player SDK for iOS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Document version: 09/10/2020
-SDK version: 3.17.0+131
+Document version: 09/24/2020
+SDK version: 3.18.0+132
 
 Getting support and submitting feedback
 =======================================
