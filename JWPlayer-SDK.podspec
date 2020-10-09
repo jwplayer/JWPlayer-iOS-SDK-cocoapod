@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "JWPlayer-SDK"
-  s.version      = "3.18.0"
+  s.version      = "3.18.1"
   s.summary      = "JW Player SDK for iOS."
 
   s.homepage     = "https://www.jwplayer.com/mobile-sdk/"
@@ -14,6 +14,11 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/jwplayer/JWPlayer-iOS-SDK-cocoapod.git", :tag => s.version.to_s }
 
   s.ios.vendored_frameworks = "JWPlayer_iOS_SDK.framework"
+
+  s.pod_target_xcconfig = {
+      'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   s.requires_arc = true
 
