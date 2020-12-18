@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *apiKey;
 
 /**
+ Used to override a set of ad tag parameters on your stream request.
+ */
+@property (nonatomic, nullable, copy) NSDictionary<NSString *, NSString *> *adTagParameters;
+
+/**
  The video identifier for this stream.
  @note Used for VOD.
  */
