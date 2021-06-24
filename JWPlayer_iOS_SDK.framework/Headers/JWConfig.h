@@ -225,7 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets the maximum bitrate that can be reached during automatic quality switching.
  @note If network bandwidth usage cannot be reduced to meet the bitRateUpperBound, it will be lowered as much as possible while continuing playback.
- @note Useful in limiting bandwith consumption for viewers.
+ @note Useful in limiting bandwidth consumption for viewers.
  */
 @property (nonatomic) CGFloat bitRateUpperBound;
 
