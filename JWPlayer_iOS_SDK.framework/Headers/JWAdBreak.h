@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *offset;
 
 /**
- This option is the URL to the ad tag, which contains the VAST response.
+ This option is the URL to the ad tag, which contains the VAST response. If tags are already present, this will replace them. If queried, this tag will return the first item in the array of tags.
  */
 @property (nonatomic, nullable, copy) NSString *tag;
 
