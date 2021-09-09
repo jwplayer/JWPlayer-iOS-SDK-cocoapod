@@ -17,7 +17,9 @@ typedef NS_ENUM(NSInteger, JWRelatedOnComplete) {
     /// Hide Recommendations UI after completion
     JWRelatedOnCompleteHide,
     /// Play related video automatically after completion
-    JWRelatedOnCompleteAutoplay
+    JWRelatedOnCompleteAutoplay,
+    /// No overlay appears and player automatically advances to the next playlist item
+    JWRelatedOnCompleteNone
 };
 
 /**

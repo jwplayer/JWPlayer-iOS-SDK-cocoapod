@@ -196,5 +196,10 @@ GoogleIMA only: creativeId referenced inside of the VAST XML.
  */
 @property (nonatomic) NSUInteger sequence;
 
+/**
+ Returns the total number of ads in a pod.
+ */
+@property (nonatomic) NSUInteger podCount;
+
 @end
 NS_ASSUME_NONNULL_END
